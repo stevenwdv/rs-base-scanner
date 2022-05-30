@@ -1,0 +1,11 @@
+{
+	"name": "rs-base-scanner",
+	"version": "1.2.2",
+	"title": "RS Base Scanner",
+	"author": "repne-scasb",
+	"factorio_version": "1.1",
+	"description": "Scans a selected area for some issues",
+	"dependencies": [
+		"base"
+	]
+}

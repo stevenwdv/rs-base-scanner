@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.2.2
+Date: 2022-05-29
+  Info:
+    - First version uploaded to mod portal
+  Features:
+    - Backwards belt scanner
+    - Missing beacon module scanner
+    - Missing productivity 3 module scanner
+    - Stray loader items scanner
+    - Crafting machine recipe per tick limit scanner
