@@ -20,8 +20,7 @@ local function scan_tick_crafting_limit(player, surface, area)
 						msg = msg .. ("; but productivity still adds %.2f"):format(RoundTwoPlaces(productivity_recipes_per_tick))
 					end
 				end
-				MarkEntity(assembler, player,
-					msg, {
+				MarkEntity(assembler, player, msg, {
 					type = "item",
 					name = assembler.name,
 				})

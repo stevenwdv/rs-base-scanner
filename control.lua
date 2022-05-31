@@ -1,9 +1,10 @@
 require "common"
-local scan_missing_productivity = require "scanners/missing_productivity"
-local scan_missing_beacon_modules = require "scanners/missing_beacon_modules"
-local scan_tick_crafting_limit = require "scanners/tick_crafting_limit"
 local scan_backwards_belts = require "scanners/backwards_belts"
+local scan_belt_capacity = require "scanners/belt_capacity"
+local scan_missing_beacon_modules = require "scanners/missing_beacon_modules"
+local scan_missing_productivity = require "scanners/missing_productivity"
 local scan_stray_loader_items = require "scanners/stray_loader_items"
+local scan_tick_crafting_limit = require "scanners/tick_crafting_limit"
 
 local scan_base_item = "rsbs-scan-base"
 
@@ -73,6 +74,12 @@ local function handle_select_event(event)
 		scan_tick_crafting_limit(player, event.surface, event.area) or found_issues
 	found_issues = player.mod_settings["rsbs-scan-backwards-belts"].value and
 		scan_backwards_belts(player, event.surface, event.area) or found_issues
+	found_issues = player.mod_settings["rsbs-scan-belt-capacity"].value and
+		scan_belt_capacity(player, event.surface, event.area, {
+			splitters_only = player.mod_settings["rsbs-belt-capacity-splitters-only"].value,
+			single_only = player.mod_settings["rsbs-belt-capacity-single-only"].value,
+			strict_splitters = player.mod_settings["rsbs-belt-capacity-strict-splitters"].value,
+		}) or found_issues
 	found_issues = player.mod_settings["rsbs-scan-stray-loader-items"].value and
 		scan_stray_loader_items(player, event.surface, event.area) or found_issues
 
