@@ -27,10 +27,14 @@ EnableMapMarkers = false
 EnableForceVisibility = false
 Marked = {}
 
+---@class Icon
+---@field type "item"|"entity"
+---@field name string
+
 ---@param entity LuaEntity
 ---@param player LuaPlayer Player this entity should be marked for
 ---@param text string
----@param icon SignalID|nil
+---@param icon Icon|nil
 function MarkEntity(entity, player, text, icon)
 	local times_marked = Marked[entity.unit_number] or 0
 	Marked[entity.unit_number] = times_marked + 1
@@ -63,11 +67,31 @@ function MarkEntity(entity, player, text, icon)
 		color = { 0, 1, 1 },
 	})
 	if EnableMapMarkers then
+		---@type SignalID|nil
+		local signal
+		local icon_text = ""
+		if icon then
+			if icon.type == "entity" then
+				if game.item_prototypes[icon.name] then
+					signal = {
+						type = "item",
+						name = icon.name,
+					}
+				else
+					icon_text = ("[img=entity.%s] "):format(icon.name)
+				end
+			else
+				signal = {
+					type = "item",
+					name = icon.name,
+				}
+			end
+		end
 		table.insert(global.chart_tags[player.index], player.force.add_chart_tag(entity.surface, {
 			position = entity.position,
 			last_user = player,
-			text = ("[color=red]%s[/color]"):format(text), -- Unfortunately, chart tags currently do not accept LocalisedStrings
-			icon = icon,
+			text = ("%s[color=red]%s[/color]"):format(icon_text, text), -- Unfortunately, chart tags do not accept LocalisedStrings
+			icon = signal,
 		}))
 	end
 end

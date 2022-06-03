@@ -65,7 +65,7 @@ local function scan_backwards_belts(player, surface, area)
 				if get_adjacent_belts(belt) >= 2 then
 					backwards_belts = backwards_belts + 1
 					MarkEntity(belt, player, "backwards belt", {
-						type = "item",
+						type = "entity",
 						name = belt.name,
 					})
 				end
@@ -120,7 +120,7 @@ local function scan_backwards_belts(player, surface, area)
 					backwards_belts = backwards_belts + 1
 					MarkEntity(belt, player,
 						belt.type == "underground-belt" and "backwards underground belt" or "backwards linked belt", {
-						type = "item",
+						type = "entity",
 						name = belt.name,
 					})
 				end
@@ -129,7 +129,7 @@ local function scan_backwards_belts(player, surface, area)
 			if not belt.loader_container then
 				backwards_belts = backwards_belts + 1
 				MarkEntity(belt, player, "unconnected loader", {
-					type = "item",
+					type = "entity",
 					name = belt.name,
 				})
 			else
@@ -138,7 +138,7 @@ local function scan_backwards_belts(player, surface, area)
 					if get_adjacent_belts(belt) >= 1 then
 						backwards_belts = backwards_belts + 1
 						MarkEntity(belt, player, "backwards loader", {
-							type = "item",
+							type = "entity",
 							name = belt.name,
 						})
 					end

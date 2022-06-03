@@ -86,7 +86,7 @@ local function scan_belt_capacity(player, surface, area, options)
 			if check_sum and tot_inp_speed > speed or inp_speed > speed then
 				slow_belts = slow_belts + 1
 				MarkEntity(belt, player, "too slow", {
-					type = "item",
+					type = "entity",
 					name = belt.name,
 				})
 				break

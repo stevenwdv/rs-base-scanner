@@ -5,7 +5,7 @@ This mod scans a selected area of your base for some common issues/mistakes. Sel
 **Currently detected issues:**
 
 - Backwards transport belts / underground belts / loaders.
-- Belts that are slower than their inputs (only partly enabled by default, see settings).
+- Belts that are slower than their inputs (only partially enabled by default, see settings).
 - Beacons lacking some modules.
 - Crafting machines lacking some productivity 3 modules (this does not account for availability of these or mods adding better modules yet).
 - Crafting machines trying to craft more than 1 recipe per tick (>60/sec), which is impossible (this will usually only occur with mods enabling greater speeds).

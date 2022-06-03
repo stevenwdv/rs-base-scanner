@@ -21,7 +21,7 @@ local function scan_tick_crafting_limit(player, surface, area)
 					end
 				end
 				MarkEntity(assembler, player, msg, {
-					type = "item",
+					type = "entity",
 					name = assembler.name,
 				})
 			end

@@ -13,8 +13,8 @@ local function scan_missing_beacon_modules(player, surface, area)
 		if module_inv.find_empty_stack() then
 			beacons_missing = beacons_missing + 1
 			MarkEntity(beacon, player, "missing modules", {
-				type = "item",
-				name = "beacon",
+				type = "entity",
+				name = beacon.name,
 			})
 		end
 	end
