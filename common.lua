@@ -1,7 +1,13 @@
 if __DebugAdapter then
-	for _, name in pairs { 'Contains', 'RoundTwoPlaces', 'Assemblers', 'GetAssemblers', 'EnableMapMarkers', 'EnableForceVisibility', 'Marked', 'MarkEntity' } do
+	for _, name in pairs { 'GetPrototype', 'RoundTwoPlaces', 'Assemblers', 'GetAssemblers', 'EnableMapMarkers', 'EnableForceVisibility', 'Marked', 'MarkEntity' } do
 		__DebugAdapter.defineGlobal(name)
 	end
+end
+
+---@param entity LuaEntity
+---@return LuaEntityPrototype|LuaTilePrototype @Prototype for this entity or the entity contained in the ghost
+function GetPrototype(entity)
+	return entity.type == "entity-ghost" and entity.ghost_prototype or entity.prototype
 end
 
 ---@param number number
