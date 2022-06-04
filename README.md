@@ -15,7 +15,7 @@ Each can be disabled via the per player mod settings menu.
 
 I plan on adding some more issues that it can detect. If you have any suggestions, let me know!
 
-![Demo](https://assets-mod.factorio.com/assets/41f5e6626ea708fa7b6906d1245a398928defae2.png)
+![Demo](https://assets-mod.factorio.com/assets/6554d7591a30166ba58421483a20d45cb6faccc9.png)
 ![Map markers](https://assets-mod.factorio.com/assets/a52eb0b17450aff8666697fc0cc8b0e9d4b03b0a.png)
 
 (Mod used for machine & belts in the screenshot is Krastorio 2.)
