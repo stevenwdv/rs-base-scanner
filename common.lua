@@ -67,7 +67,6 @@ function MarkEntity(entity, player, text, icon)
 		forces = EnableForceVisibility and { player.force } or nil,
 
 		text = text,
-		font = "default-bold",
 		scale = 1.2,
 		scale_with_zoom = true,
 		color = { 0, 1, 1 },
