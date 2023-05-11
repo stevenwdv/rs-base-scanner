@@ -1,10 +1,8 @@
----@param player LuaPlayer
----@param surface LuaSurface
----@param area BoundingBox
+---@param ctx ScanContext
 ---@return boolean
-local function scan_stray_loader_items(player, surface, area)
-	local loaders = surface.find_entities_filtered {
-		area = area,
+local function scan_stray_loader_items(ctx)
+	local loaders = ctx.surface.find_entities_filtered {
+		area = ctx.area,
 		type = { "loader", "loader-1x1" },
 	}
 	local affected_loaders = 0
@@ -32,7 +30,7 @@ local function scan_stray_loader_items(player, surface, area)
 						local stray_item = next(loader_items)
 						if stray_item then
 							affected_loaders = affected_loaders + 1
-							MarkEntity(loader, player, "loader with stray items", {
+							ctx:mark_entity(loader, "loader with stray items", {
 								type = "item",
 								name = stray_item,
 							})
@@ -43,7 +41,7 @@ local function scan_stray_loader_items(player, surface, area)
 		end
 	end
 	if affected_loaders > 0 then
-		player.print { "rsbs-stray-loader-items.summary", affected_loaders }
+		ctx:print { "rsbs-stray-loader-items.summary", affected_loaders }
 		return true
 	end
 	return false

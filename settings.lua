@@ -1,10 +1,25 @@
 data:extend {
 	{
-		type = "bool-setting",
+		type = "string-setting",
 		name = "rsbs-scan-missing-productivity",
 		setting_type = "runtime-per-user",
-		default_value = true,
+		allowed_values = {
+			"disable",
+			"empty-slots",
+			"non-productivity-slots",
+			"not-best-available",
+			"not-minimal-tier",
+		},
+		default_value = "non-productivity-slots",
 		order = "a",
+	},
+	{
+		type = "int-setting",
+		name = "rsbs-scan-missing-productivity-tier",
+		setting_type = "runtime-per-user",
+		minimum_value = 1,
+		default_value = 1,
+		order = "a-a",
 	},
 	{
 		type = "bool-setting",
@@ -29,7 +44,7 @@ data:extend {
 	},
 	{
 		type = "bool-setting",
-		name = "rsbs-scan-belt-capacity",
+		name = "rsbs-scan-belt-capacity", 
 		setting_type = "runtime-per-user",
 		default_value = true,
 		order = "e",
@@ -40,6 +55,13 @@ data:extend {
 		setting_type = "runtime-per-user",
 		default_value = true,
 		order = "f",
+	},
+	{
+		type = "bool-setting",
+		name = "rsbs-scan-logistic-chest-capacity",
+		setting_type = "runtime-per-user",
+		default_value = true,
+		order = "g",
 	},
 
 	{

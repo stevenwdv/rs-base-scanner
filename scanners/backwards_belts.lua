@@ -15,7 +15,7 @@ local function count_relevant_adjacent(belt, adjacent)
 	for _, adj_belt in pairs(adjacent) do
 		-- Disregard e.g. perpendicular splitters/loaders just passing by
 		if adj_belt ~= belt and (adj_belt.type == "transport-belt" or
-			adj_belt.orientation == opposite_orientation(belt.orientation)) then
+				adj_belt.orientation == opposite_orientation(belt.orientation)) then
 			adjacent_count = adjacent_count + 1
 		end
 	end
@@ -45,13 +45,11 @@ local function get_adjacent_belts(belt)
 	return count_relevant_adjacent(belt, adjacent)
 end
 
----@param player LuaPlayer
----@param surface LuaSurface
----@param area BoundingBox
+---@param ctx ScanContext
 ---@return boolean
-local function scan_backwards_belts(player, surface, area)
-	local belts = surface.find_entities_filtered {
-		area = area,
+local function scan_backwards_belts(ctx)
+	local belts = ctx.surface.find_entities_filtered {
+		area = ctx.area,
 		type = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt" },
 	}
 	local backwards_belts = 0
@@ -64,14 +62,14 @@ local function scan_backwards_belts(player, surface, area)
 				-- But it should probably have been connected to belts on both sides
 				if get_adjacent_belts(belt) >= 2 then
 					backwards_belts = backwards_belts + 1
-					MarkEntity(belt, player, "backwards belt", {
+					ctx:mark_entity(belt, "backwards belt", {
 						type = "entity",
 						name = belt.name,
 					})
 				end
 			end
 		elseif belt.type == "underground-belt" or belt.type == "linked-belt" then
-			---@type LuaEntity|nil
+			---@type LuaEntity?
 			local neighbor
 			if belt.type == "underground-belt" then
 				neighbor = belt.neighbours
@@ -118,17 +116,17 @@ local function scan_backwards_belts(player, surface, area)
 				end
 				if backwards == 2 then -- Both belts in the pair are backwards
 					backwards_belts = backwards_belts + 1
-					MarkEntity(belt, player,
+					ctx:mark_entity(belt,
 						belt.type == "underground-belt" and "backwards underground belt" or "backwards linked belt", {
-						type = "entity",
-						name = belt.name,
-					})
+							type = "entity",
+							name = belt.name,
+						})
 				end
 			end
 		elseif belt.type == "loader-1x1" or belt.type == "loader" then
 			if not belt.loader_container then
 				backwards_belts = backwards_belts + 1
-				MarkEntity(belt, player, "unconnected loader", {
+				ctx:mark_entity(belt, "unconnected loader", {
 					type = "entity",
 					name = belt.name,
 				})
@@ -137,7 +135,7 @@ local function scan_backwards_belts(player, surface, area)
 				if (belt.loader_type == "input" and #belt_neighbours.inputs or #belt_neighbours.outputs) == 0 then
 					if get_adjacent_belts(belt) >= 1 then
 						backwards_belts = backwards_belts + 1
-						MarkEntity(belt, player, "backwards loader", {
+						ctx:mark_entity(belt, "backwards loader", {
 							type = "entity",
 							name = belt.name,
 						})
@@ -148,7 +146,7 @@ local function scan_backwards_belts(player, surface, area)
 		--TODO splitter
 	end
 	if backwards_belts > 0 then
-		player.print { "rsbs-backwards-belts.summary", backwards_belts }
+		ctx:print { "rsbs-backwards-belts.summary", backwards_belts }
 		return true
 	end
 	return false
