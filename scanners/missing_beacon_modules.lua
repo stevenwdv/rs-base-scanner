@@ -1,10 +1,7 @@
 ---@param ctx ScanContext
 ---@return boolean
 local function scan_missing_beacon_modules(ctx)
-	local beacons = ctx.surface.find_entities_filtered {
-		area = ctx.area,
-		type = "beacon",
-	}
+	local beacons = ctx:find_entities { type = "beacon" }
 	local beacons_missing = 0
 	for _, beacon in pairs(beacons) do
 		local module_inv = beacon.get_module_inventory()

@@ -48,8 +48,7 @@ end
 ---@param ctx ScanContext
 ---@return boolean
 local function scan_backwards_belts(ctx)
-	local belts = ctx.surface.find_entities_filtered {
-		area = ctx.area,
+	local belts = ctx:find_entities {
 		type = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt" },
 	}
 	local backwards_belts = 0

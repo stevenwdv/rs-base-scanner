@@ -11,8 +11,7 @@ local belt_types = { "linked-belt", "loader-1x1", "loader", "transport-belt", "u
 ---@param options ScanBeltOptions
 ---@return boolean
 local function scan_belt_capacity(ctx, options)
-	local belts = ctx.surface.find_entities_filtered {
-		area = ctx.area,
+	local belts = ctx:find_entities {
 		type = options.splitters_only and { "splitter" } or belt_types,
 	}
 	local slow_belts = 0
@@ -46,6 +45,7 @@ local function scan_belt_capacity(ctx, options)
 			local input = inputs[n_inp]
 
 			local inp_speed = futils.get_prototype(input).belt_speed
+			---@cast inp_speed -nil
 
 			--FIXME sum if belt self is splitter
 

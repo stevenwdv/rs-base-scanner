@@ -1,6 +1,18 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.0
+Date: 2023-05-13
+  Features:
+    - Detect assembling machines that have no recipe set
+    - Detect crafting machines with missing fluid connections
+    - Detect orphan underground belts, pipes to ground, and rail signals
+    - Added option to only scan overfull logistic chests with multiple requests
+  Bugfixes:
+    - Remove orange outline when destroying marked entities
+    - Do not report entities marked for deconstruction
+
+---------------------------------------------------------------------------------------------------
 Version: 1.4.0
-Date: 2023-05-09
+Date: 2023-05-11
   Features:
     - Detect logistic chests that request too many items for their capacity
     - Added more options for detecting missing productivity modules

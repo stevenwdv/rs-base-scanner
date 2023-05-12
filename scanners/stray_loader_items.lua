@@ -1,10 +1,7 @@
 ---@param ctx ScanContext
 ---@return boolean
 local function scan_stray_loader_items(ctx)
-	local loaders = ctx.surface.find_entities_filtered {
-		area = ctx.area,
-		type = { "loader", "loader-1x1" },
-	}
+	local loaders = ctx:find_entities { type = { "loader", "loader-1x1" } }
 	local affected_loaders = 0
 	for _, loader in pairs(loaders) do
 		if loader.loader_type == "input" then
@@ -16,6 +13,7 @@ local function scan_stray_loader_items(ctx)
 						---@type table<string,boolean>
 						local loader_items = {}
 						for n_line = 1, 2 do
+							---@cast n_line uint
 							for name, _ in pairs(loader.get_transport_line(n_line).get_contents()) do
 								loader_items[name] = true
 							end

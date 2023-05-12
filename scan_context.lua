@@ -1,9 +1,11 @@
+local futils = require "factorio_utils"
+
 ---@class ScanOptions
 ---@field player LuaPlayer
 ---@field surface LuaSurface
 ---@field area BoundingBox
 ---@field enable_map_markers boolean
----@field enable_force_visibility boolean
+---@field enable_force_visibility boolean Enable visibility of drawn markings for the whole force
 
 ---@class ScanContext : ScanOptions
 local ScanContext = {
@@ -38,18 +40,24 @@ function ScanContext.new(init)
 	return obj
 end
 
+---@param param LuaSurface.find_entities_filtered_param
+---@return LuaEntity[]
+function ScanContext:find_entities(param)
+	param.area = self.area
+	param.to_be_deconstructed = false
+	return self.surface.find_entities_filtered(param)
+end
+
+---Get assembling machines, rocket silos, and furnaces
 ---@return LuaEntity[]
 function ScanContext:get_crafting_machines()
 	self.crafting_machines = self.crafting_machines or
-		self.surface.find_entities_filtered {
-			area = self.area,
-			type = { "assembling-machine", "rocket-silo", "furnace" },
-		}
+		self:find_entities { type = { "assembling-machine", "rocket-silo", "furnace" } }
 	return self.crafting_machines
 end
 
 ---@class MarkIcon
----@field type "item"|"entity"
+---@field type "item"|"fluid"|"virtual"|"entity"
 ---@field name string
 
 ---@param entity LuaEntity
@@ -59,17 +67,22 @@ function ScanContext:mark_entity(entity, text, icon)
 	local times_marked = self.marked_entities[entity.unit_number] or 0
 	self.marked_entities[entity.unit_number] = times_marked + 1
 
-	table.insert(global.render_objs[self.player.index], rendering.draw_rectangle {
-		surface = entity.surface,
-		left_top = entity.bounding_box.left_top,
-		right_bottom = entity.bounding_box.right_bottom,
-		players = self.enable_force_visibility and nil or { self.player },
-		forces = self.enable_force_visibility and { self.player.force } or nil,
+	if times_marked == 0 then
+		local prototype = futils.get_prototype(entity)
+		table.insert(global.render_objs[self.player.index], rendering.draw_rectangle {
+			surface = entity.surface,
+			left_top = entity,
+			left_top_offset = prototype.selection_box.left_top,
+			right_bottom = entity,
+			right_bottom_offset = prototype.selection_box.right_bottom,
+			players = self.enable_force_visibility and nil or { self.player },
+			forces = self.enable_force_visibility and { self.player.force } or nil,
 
-		color = { .90, .30, .03, .4 },
-		filled = false,
-		width = 5,
-	})
+			color = { .90, .30, .03, .4 },
+			filled = false,
+			width = 5,
+		})
+	end
 	table.insert(global.render_objs[self.player.index], rendering.draw_text {
 		surface = entity.surface,
 		target = entity,
@@ -77,7 +90,7 @@ function ScanContext:mark_entity(entity, text, icon)
 		alignment = "center",
 		vertical_alignment = "middle",
 		orientation = .1,
-		players = self.enable_force_visibility and nil or { self.player },
+		players = not self.enable_force_visibility and { self.player } or nil,
 		forces = self.enable_force_visibility and { self.player.force } or nil,
 
 		text = text,
@@ -110,7 +123,7 @@ function ScanContext:mark_entity(entity, text, icon)
 				end
 			else
 				signal = {
-					type = "item",
+					type = icon.type,
 					name = icon.name,
 				}
 			end
@@ -128,7 +141,7 @@ end
 function ScanContext:print(message)
 	if not self.printed_separator then
 		self.printed_separator = true
-		self.player.print("")
+		self.player.print ""
 	end
 	self.player.print(message)
 end
