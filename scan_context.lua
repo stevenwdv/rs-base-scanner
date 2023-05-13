@@ -6,6 +6,8 @@ local futils = require "factorio_utils"
 ---@field area BoundingBox
 ---@field enable_map_markers boolean
 ---@field enable_force_visibility boolean Enable visibility of drawn markings for the whole force
+---@field print_location_min_dimension integer
+---@field print_location_max_count integer
 
 ---@class ScanContext : ScanOptions
 local ScanContext = {
@@ -16,6 +18,16 @@ local ScanContext = {
 
 	enable_map_markers = false,
 	enable_force_visibility = false,
+
+	print_location_min_dimension = 0,
+	print_location_max_count = math.huge,
+
+	---@protected
+	---@type table<ChunkID,LuaEntity> Maps large chunks to an entity with issues in that chunk, for the current scan type
+	issue_chunks = nil,
+
+	---@protected
+	nr_issue_chunks = 0,
 
 	---@protected
 	---@type table<uint,integer> Maps unit numbers to number of times they were marked
@@ -35,8 +47,9 @@ ScanContext.__index = ScanContext
 ---@nodiscard
 function ScanContext.new(init)
 	local obj = setmetatable(init, ScanContext)
-	---@cast obj ScanContext
 	obj.marked_entities = {}
+	obj.issue_chunks = {}
+	---@cast obj ScanContext
 	return obj
 end
 
@@ -68,6 +81,22 @@ function ScanContext:mark_entity(entity, text, icon)
 	self.marked_entities[entity.unit_number] = times_marked + 1
 
 	if times_marked == 0 then
+		if self.nr_issue_chunks < self.print_location_max_count
+			and (self.area.right_bottom.x - self.area.left_top.x > self.print_location_min_dimension
+				or self.area.right_bottom.y - self.area.left_top.y > self.print_location_min_dimension)
+		then
+			local pos = entity.position
+			local large_chunk_size = self.print_location_min_dimension
+			local large_chunk_x, large_chunk_y =
+				math.floor(pos.x / large_chunk_size),
+				math.floor(pos.y / large_chunk_size)
+			local large_chunk_id = futils.get_chunk_id(large_chunk_x, large_chunk_y)
+			if not self.issue_chunks[large_chunk_id] then
+				self.issue_chunks[large_chunk_id] = entity
+				self.nr_issue_chunks = self.nr_issue_chunks + 1
+			end
+		end
+
 		local prototype = futils.get_prototype(entity)
 		table.insert(global.render_objs[self.player.index], rendering.draw_rectangle {
 			surface = entity.surface,
@@ -75,7 +104,7 @@ function ScanContext:mark_entity(entity, text, icon)
 			left_top_offset = prototype.selection_box.left_top,
 			right_bottom = entity,
 			right_bottom_offset = prototype.selection_box.right_bottom,
-			players = self.enable_force_visibility and nil or { self.player },
+			players = not self.enable_force_visibility and { self.player } or nil,
 			forces = self.enable_force_visibility and { self.player.force } or nil,
 
 			color = { .90, .30, .03, .4 },
@@ -144,6 +173,23 @@ function ScanContext:print(message)
 		self.player.print ""
 	end
 	self.player.print(message)
+end
+
+---@param message LocalisedString
+function ScanContext:print_summary(message)
+	if self.nr_issue_chunks > 0 then
+		message = { "", message, ", e.g. " }
+		for _, entity in pairs(self.issue_chunks) do
+			local pos = entity.position
+			local surface = entity.surface
+			table.insert(message,
+				surface.index == 1 and ("[gps=%s,%s]"):format(pos.x, pos.y)
+				or ("[gps=%s,%s,%s]"):format(pos.x, pos.y, entity.surface.name))
+		end
+		self.issue_chunks = {}
+		self.nr_issue_chunks = 0
+	end
+	self:print(message)
 end
 
 return ScanContext

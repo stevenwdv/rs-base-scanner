@@ -13,7 +13,7 @@ local function scan_orphan_rail_signals(ctx)
 		end
 	end
 	if orphan_signals > 0 then
-		ctx:print { "rsbs-orphan-rail-signals.summary", orphan_signals }
+		ctx:print_summary { "rsbs-orphan-rail-signals.summary", orphan_signals }
 		return true
 	end
 	return false

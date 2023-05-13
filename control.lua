@@ -69,6 +69,8 @@ local function handle_select_event(event)
 	init_globals(player)
 	clear_objects(player)
 
+	local settings = player.mod_settings
+
 	local is_alt = event.name == defines.events.on_player_alt_selected_area
 	local ctx = ScanContext.new {
 		player = player,
@@ -76,10 +78,11 @@ local function handle_select_event(event)
 		area = event.area,
 		enable_map_markers = is_alt,
 		enable_force_visibility = is_alt,
+		print_location_min_dimension = settings["rsbs-print-location-min-dimension"].value,
+		print_location_max_count = settings["rsbs-print-location-max-count"].value,
 	}
 
 	local found_issues = false
-	local settings = player.mod_settings
 	local scan_missing_productivity_setting = settings["rsbs-scan-missing-productivity"].value
 	found_issues = scan_missing_productivity_setting ~= "disable" and
 		scan_missing_productivity(ctx, {

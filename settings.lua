@@ -1,5 +1,22 @@
 data:extend {
 	{
+		type = "int-setting",
+		name = "rsbs-print-location-min-dimension",
+		setting_type = "runtime-per-user",
+		minimum_value = 0,
+		default_value = 32 * 7,
+		order = "0-a",
+	},
+	{
+		type = "int-setting",
+		name = "rsbs-print-location-max-count",
+		setting_type = "runtime-per-user",
+		minimum_value = 0,
+		default_value = 4,
+		order = "0-b",
+	},
+
+	{
 		type = "string-setting",
 		name = "rsbs-scan-missing-productivity",
 		setting_type = "runtime-per-user",

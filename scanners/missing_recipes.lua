@@ -13,7 +13,7 @@ local function scan_missing_recipes(ctx)
 		end
 	end
 	if recipes_missing > 0 then
-		ctx:print { "rsbs-missing-recipes.summary", recipes_missing }
+		ctx:print_summary { "rsbs-missing-recipes.summary", recipes_missing }
 		return true
 	end
 	return false

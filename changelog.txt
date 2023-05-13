@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.6.0
+Date: 2023-05-13
+  Features:
+    - Print locations of some affected entities when selecting a large area
+  Changes:
+    - Do not warn about crafting speed for hidden recipes such as in Space Exploration cargo rocket silos
+
+---------------------------------------------------------------------------------------------------
 Version: 1.5.0
 Date: 2023-05-13
   Features:
@@ -6,9 +14,10 @@ Date: 2023-05-13
     - Detect crafting machines with missing fluid connections
     - Detect orphan underground belts, pipes to ground, and rail signals
     - Added option to only scan overfull logistic chests with multiple requests
+  Changes:
+    - Do not report entities marked for deconstruction
   Bugfixes:
     - Remove orange outline when destroying marked entities
-    - Do not report entities marked for deconstruction
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.0
@@ -18,9 +27,8 @@ Date: 2023-05-11
     - Added more options for detecting missing productivity modules
   Bugfixes:
     - Fixed warnings about missing productivity modules for assembling machines that did not support them, such as space assemblers in Space Exploration
-  Minor Features:
-    - Added separator between scan outputs
   Changes:
+    - Added separator between scan outputs
     - Improved code structure
 
 ---------------------------------------------------------------------------------------------------

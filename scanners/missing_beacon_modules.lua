@@ -15,7 +15,7 @@ local function scan_missing_beacon_modules(ctx)
 		end
 	end
 	if beacons_missing > 0 then
-		ctx:print { "rsbs-missing-beacon-modules.summary", beacons_missing }
+		ctx:print_summary { "rsbs-missing-beacon-modules.summary", beacons_missing }
 		return true
 	end
 	return false

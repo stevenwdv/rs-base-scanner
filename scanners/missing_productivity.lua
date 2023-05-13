@@ -110,11 +110,11 @@ local function scan_missing_productivity(ctx, options)
 	end
 	if assemblers_lacking > 0 then
 		if mode == "not-best-available" then
-			ctx:print { "rsbs-missing-productivity.summary-specific", assemblers_lacking, productivity_module.name }
+			ctx:print_summary { "rsbs-missing-productivity.summary-specific", assemblers_lacking, productivity_module.name }
 		elseif mode == "not-minimal-tier" then
-			ctx:print { "rsbs-missing-productivity.summary-minimal", assemblers_lacking, productivity_module.name }
+			ctx:print_summary { "rsbs-missing-productivity.summary-minimal", assemblers_lacking, productivity_module.name }
 		else
-			ctx:print { "rsbs-missing-productivity.summary-any", assemblers_lacking }
+			ctx:print_summary { "rsbs-missing-productivity.summary-any", assemblers_lacking }
 		end
 		return true
 	end

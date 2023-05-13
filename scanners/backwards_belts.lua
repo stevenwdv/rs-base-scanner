@@ -145,7 +145,7 @@ local function scan_backwards_belts(ctx)
 		--TODO splitter
 	end
 	if backwards_belts > 0 then
-		ctx:print { "rsbs-backwards-belts.summary", backwards_belts }
+		ctx:print_summary { "rsbs-backwards-belts.summary", backwards_belts }
 		return true
 	end
 	return false

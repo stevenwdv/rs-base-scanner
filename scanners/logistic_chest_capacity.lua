@@ -48,7 +48,7 @@ local function scan_logistic_chest_capacity(ctx, options)
 		end
 	end
 	if overfull_chests > 0 then
-		ctx:print { "rsbs-logistic-chest-capacity.summary", overfull_chests }
+		ctx:print_summary { "rsbs-logistic-chest-capacity.summary", overfull_chests }
 		return true
 	end
 	return false

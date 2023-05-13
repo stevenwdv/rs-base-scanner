@@ -26,8 +26,25 @@ local function rotate_quarters(offset, orientation)
 	}
 end
 
+---@param pos MapPosition
+---@return int chunk_x, int chunk_y
+local function get_chunk(pos)
+	return math.floor(pos.x / 32), math.floor(pos.y / 32)
+end
+
+---@alias ChunkID integer
+
+---@param chunk_x int
+---@param chunk_y int
+---@return ChunkID
+local function get_chunk_id(chunk_x, chunk_y)
+	return chunk_x * 0x10000 + chunk_y -- Shift 16 bits
+end
+
 return {
 	get_type = get_type,
 	get_prototype = get_prototype,
 	rotate_quarters = rotate_quarters,
+	get_chunk = get_chunk,
+	get_chunk_id = get_chunk_id,
 }

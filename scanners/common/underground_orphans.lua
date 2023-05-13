@@ -4,21 +4,6 @@ local lualib_util = require "__core__.lualib.util"
 
 local sign = gutils.sign
 
----@param pos MapPosition
----@return int chunk_x, int chunk_y
-local function get_chunk(pos)
-	return math.floor(pos.x / 32), math.floor(pos.y / 32)
-end
-
----@alias ChunkID integer
-
----@param chunk_x int
----@param chunk_y int
----@return ChunkID
-local function get_chunk_id(chunk_x, chunk_y)
-	return chunk_x * 0x10000 + chunk_y -- Shift 16 bits
-end
-
 ---@param underground LuaEntity
 ---@return boolean
 local function has_neighbor(underground)
@@ -87,7 +72,7 @@ local function scan_underground_orphans(ctx, type, options)
 				then
 					mark(underground)
 				else
-					local chunk_id = get_chunk_id(get_chunk(underground.position))
+					local chunk_id = futils.get_chunk_id(futils.get_chunk(underground.position))
 					local chunk_orphans = maybe_orphan[chunk_id]
 					if not chunk_orphans then
 						chunk_orphans = {}
@@ -101,7 +86,7 @@ local function scan_underground_orphans(ctx, type, options)
 
 	for _, chunk_orphans in pairs(maybe_orphan) do
 		for _, underground in pairs(chunk_orphans) do
-			local chunk_x, chunk_y = get_chunk(underground.position)
+			local chunk_x, chunk_y = futils.get_chunk(underground.position)
 
 			local underground_distance = underground.prototype.max_underground_distance + options.extra_search_distance
 			local underground_chunks = math.ceil(underground_distance / 32)
@@ -112,7 +97,7 @@ local function scan_underground_orphans(ctx, type, options)
 			local underground_dir = futils.rotate_quarters(is_belt_input and { 0, -1 } or { 0, 1 },
 				underground.orientation)
 			for _chunk_offset = 0, underground_chunks do
-				local neighbor_orphans = maybe_orphan[get_chunk_id(chunk_x, chunk_y)]
+				local neighbor_orphans = maybe_orphan[futils.get_chunk_id(chunk_x, chunk_y)]
 				if neighbor_orphans then
 					for _, neighbor in pairs(neighbor_orphans) do
 						if scan_belts and neighbor.name == underground.name and neighbor.direction == underground.direction and
@@ -139,7 +124,7 @@ local function scan_underground_orphans(ctx, type, options)
 	end
 
 	if orphans > 0 then
-		ctx:print { scan_belts and "rsbs-orphan-belts.summary" or "rsbs-orphan-pipes.summary", orphans }
+		ctx:print_summary { scan_belts and "rsbs-orphan-belts.summary" or "rsbs-orphan-pipes.summary", orphans }
 		return true
 	end
 	return false

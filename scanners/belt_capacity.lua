@@ -100,7 +100,7 @@ local function scan_belt_capacity(ctx, options)
 		::next_belt::
 	end
 	if slow_belts > 0 then
-		ctx:print { "rsbs-belt-capacity.summary", slow_belts }
+		ctx:print_summary { "rsbs-belt-capacity.summary", slow_belts }
 		return true
 	end
 	return false

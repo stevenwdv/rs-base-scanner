@@ -21,7 +21,7 @@ local function scan_missing_fluids(ctx)
 		end
 	end
 	if missing_fluids > 0 then
-		ctx:print { "rsbs-missing-fluids.summary", missing_fluids }
+		ctx:print_summary { "rsbs-missing-fluids.summary", missing_fluids }
 		return true
 	end
 	return false

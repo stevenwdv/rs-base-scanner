@@ -39,7 +39,7 @@ local function scan_stray_loader_items(ctx)
 		end
 	end
 	if affected_loaders > 0 then
-		ctx:print { "rsbs-stray-loader-items.summary", affected_loaders }
+		ctx:print_summary { "rsbs-stray-loader-items.summary", affected_loaders }
 		return true
 	end
 	return false
