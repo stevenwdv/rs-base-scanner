@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.7.0
+Date: 2023-09-02
+  Bugfixes:
+    - Missing productivity modules scan did not warn about non-productivity modules in some cases
+
+---------------------------------------------------------------------------------------------------
 Version: 1.6.0
 Date: 2023-05-13
   Features:

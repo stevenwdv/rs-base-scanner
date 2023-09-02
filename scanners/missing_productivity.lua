@@ -81,18 +81,11 @@ local function scan_missing_productivity(ctx, options)
 					local is_missing = false
 					if mode == "empty-slots" then
 						is_missing = module_inv.find_empty_stack() ~= nil
-					elseif mode == "non-productivity-slots" then
-						for i = 1, #module_inv do
-							local stack = module_inv[i]
-							if not stack.valid_for_read or stack.prototype.category ~= "productivity" then
-								is_missing = true
-							end
-						end
 					else
-						icon = productivity_module.name
 						for i = 1, #module_inv do
 							local stack = module_inv[i]
-							if not stack.valid_for_read or stack.prototype.tier < productivity_module.tier then
+							if not stack.valid_for_read or stack.prototype.category ~= "productivity" or
+								mode ~= "non-productivity-slots" and stack.prototype.tier < productivity_module.tier then
 								is_missing = true
 							end
 						end
