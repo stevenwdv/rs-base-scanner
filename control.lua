@@ -6,6 +6,8 @@ local scan_missing_beacon_modules = require "scanners.missing_beacon_modules"
 local scan_missing_fluids = require "scanners.missing_fluids"
 local scan_missing_productivity = require "scanners.missing_productivity"
 local scan_missing_recipes = require "scanners.missing_recipes"
+local scan_no_power = require "scanners.no_power"
+local scan_low_power = require "scanners.low_power"
 local scan_orphan_belts = require "scanners.orphan_belts"
 local scan_orphan_pipes = require "scanners.orphan_pipes"
 local scan_orphan_rail_signals = require "scanners.orphan_rail_signals"
@@ -95,6 +97,10 @@ local function handle_select_event(event)
 		scan_missing_recipes(ctx) or found_issues
 	found_issues = settings["rsbs-scan-missing-fluids"].value and
 		scan_missing_fluids(ctx) or found_issues
+	found_issues = settings["rsbs-scan-no-power"].value and
+		scan_no_power(ctx) or found_issues
+	found_issues = settings["rsbs-scan-low-power"].value and
+		scan_low_power(ctx) or found_issues
 	found_issues = settings["rsbs-scan-tick-crafting-limit"].value and
 		scan_tick_crafting_limit(ctx) or found_issues
 	found_issues = settings["rsbs-scan-backwards-belts"].value and

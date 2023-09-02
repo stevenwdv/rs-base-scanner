@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.7.0
 Date: 2023-09-02
+  Features:
+    - Add scan to report crafting machines with no power (default disabled) or with low power
   Bugfixes:
     - Missing productivity modules scan did not warn about non-productivity modules in some cases
 

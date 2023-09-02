@@ -65,15 +65,15 @@ data:extend {
 
 	{
 		type = "bool-setting",
-		name = "rsbs-scan-tick-crafting-limit",
+		name = "rsbs-scan-no-power",
 		setting_type = "runtime-per-user",
-		default_value = true,
+		default_value = false,
 		order = "e",
 	},
 
 	{
 		type = "bool-setting",
-		name = "rsbs-scan-backwards-belts",
+		name = "rsbs-scan-low-power",
 		setting_type = "runtime-per-user",
 		default_value = true,
 		order = "f",
@@ -81,17 +81,33 @@ data:extend {
 
 	{
 		type = "bool-setting",
-		name = "rsbs-scan-orphan-belts",
+		name = "rsbs-scan-tick-crafting-limit",
 		setting_type = "runtime-per-user",
 		default_value = true,
 		order = "g",
+	},
+
+	{
+		type = "bool-setting",
+		name = "rsbs-scan-backwards-belts",
+		setting_type = "runtime-per-user",
+		default_value = true,
+		order = "h",
+	},
+
+	{
+		type = "bool-setting",
+		name = "rsbs-scan-orphan-belts",
+		setting_type = "runtime-per-user",
+		default_value = true,
+		order = "i",
 	},
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-orphan-belts-only-possible-neighbor",
 		setting_type = "runtime-per-user",
 		default_value = true,
-		order = "g-a",
+		order = "i-a",
 	},
 	{
 		type = "int-setting",
@@ -99,7 +115,7 @@ data:extend {
 		setting_type = "runtime-per-user",
 		minimum_value = 1,
 		default_value = 10,
-		order = "g-b",
+		order = "i-b",
 	},
 
 	{
@@ -107,28 +123,28 @@ data:extend {
 		name = "rsbs-scan-belt-capacity",
 		setting_type = "runtime-per-user",
 		default_value = true,
-		order = "h",
+		order = "j",
 	},
 	{
 		type = "bool-setting",
 		name = "rsbs-belt-capacity-splitters-only",
 		setting_type = "runtime-per-user",
 		default_value = false,
-		order = "h-a",
+		order = "j-a",
 	},
 	{
 		type = "bool-setting",
 		name = "rsbs-belt-capacity-single-only",
 		setting_type = "runtime-per-user",
 		default_value = true,
-		order = "h-b",
+		order = "j-b",
 	},
 	{
 		type = "bool-setting",
 		name = "rsbs-belt-capacity-strict-splitters",
 		setting_type = "runtime-per-user",
 		default_value = false,
-		order = "h-c",
+		order = "j-c",
 	},
 
 	{
@@ -136,7 +152,7 @@ data:extend {
 		name = "rsbs-scan-stray-loader-items",
 		setting_type = "runtime-per-user",
 		default_value = true,
-		order = "i",
+		order = "k",
 	},
 
 	{
@@ -144,14 +160,14 @@ data:extend {
 		name = "rsbs-scan-orphan-pipes",
 		setting_type = "runtime-per-user",
 		default_value = true,
-		order = "j",
+		order = "l",
 	},
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-orphan-pipes-only-possible-neighbor",
 		setting_type = "runtime-per-user",
 		default_value = true,
-		order = "j-a",
+		order = "l-a",
 	},
 
 	{
@@ -159,7 +175,7 @@ data:extend {
 		name = "rsbs-scan-orphan-rail-signals",
 		setting_type = "runtime-per-user",
 		default_value = true,
-		order = "k",
+		order = "m",
 	},
 
 	{
@@ -167,13 +183,13 @@ data:extend {
 		name = "rsbs-scan-logistic-chest-capacity",
 		setting_type = "runtime-per-user",
 		default_value = true,
-		order = "l",
+		order = "n",
 	},
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-logistic-chest-capacity-multiple-requests-only",
 		setting_type = "runtime-per-user",
 		default_value = true,
-		order = "l-a",
+		order = "n-a",
 	},
 }

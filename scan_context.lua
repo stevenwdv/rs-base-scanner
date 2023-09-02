@@ -178,7 +178,8 @@ end
 ---@param message LocalisedString
 function ScanContext:print_summary(message)
 	if self.nr_issue_chunks > 0 then
-		message = { "", message, ", e.g. " }
+		message = { "", message }
+		table.insert(message, self.nr_issue_chunks > 1 and ", e.g. " or " ")
 		for _, entity in pairs(self.issue_chunks) do
 			local pos = entity.position
 			local surface = entity.surface
