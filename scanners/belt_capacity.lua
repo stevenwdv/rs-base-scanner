@@ -52,7 +52,7 @@ local function scan_belt_capacity(ctx, options)
 			if check_sum or inp_speed > speed then
 				while input.type == "underground-belt" or input.type == "linked-belt" do
 					local neighbor = input[
-						({ ["underground-belt"] = "neighbours", ["linked-belt"] = "linked_belt_neighbour" })[input.type]]
+					({ ["underground-belt"] = "neighbours", ["linked-belt"] = "linked_belt_neighbour" })[input.type]]
 					if not neighbor then
 						break
 					end
@@ -106,4 +106,13 @@ local function scan_belt_capacity(ctx, options)
 	return false
 end
 
-return scan_belt_capacity
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	return settings["rsbs-scan-belt-capacity"].value and scan_belt_capacity(ctx, {
+		splitters_only = settings["rsbs-belt-capacity-splitters-only"].value,
+		single_only = settings["rsbs-belt-capacity-single-only"].value,
+		strict_splitters = settings["rsbs-belt-capacity-strict-splitters"].value,
+	})
+end

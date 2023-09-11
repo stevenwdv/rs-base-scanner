@@ -1,18 +1,20 @@
 local ScanContext = require "scan_context"
-local scan_backwards_belts = require "scanners.backwards_belts"
-local scan_belt_capacity = require "scanners.belt_capacity"
-local scan_logistic_chest_capacity = require "scanners.logistic_chest_capacity"
-local scan_missing_beacon_modules = require "scanners.missing_beacon_modules"
-local scan_missing_fluids = require "scanners.missing_fluids"
-local scan_missing_productivity = require "scanners.missing_productivity"
-local scan_missing_recipes = require "scanners.missing_recipes"
-local scan_no_power = require "scanners.no_power"
-local scan_low_power = require "scanners.low_power"
-local scan_orphan_belts = require "scanners.orphan_belts"
-local scan_orphan_pipes = require "scanners.orphan_pipes"
-local scan_orphan_rail_signals = require "scanners.orphan_rail_signals"
-local scan_stray_loader_items = require "scanners.stray_loader_items"
-local scan_tick_crafting_limit = require "scanners.tick_crafting_limit"
+local scanners = {
+	require "scanners.missing_productivity",
+	require "scanners.missing_beacon_modules",
+	require "scanners.missing_recipes",
+	require "scanners.missing_fluids",
+	require "scanners.no_power",
+	require "scanners.low_power",
+	require "scanners.tick_crafting_limit",
+	require "scanners.backwards_belts",
+	require "scanners.orphan_belts",
+	require "scanners.belt_capacity",
+	require "scanners.stray_loader_items",
+	require "scanners.orphan_pipes",
+	require "scanners.orphan_rail_signals",
+	require "scanners.logistic_chest_capacity",
+}
 
 local scan_base_item = "rsbs-scan-base"
 
@@ -67,11 +69,11 @@ local function handle_select_event(event)
 	end
 
 	local player = game.get_player(event.player_index)
-	---@cast player -nil
+	---@cast player -?
 	init_globals(player)
 	clear_objects(player)
 
-	local settings = player.mod_settings
+	local settings = player.mod_settings --[[@as PlayerSettings]]
 
 	local is_alt = event.name == defines.events.on_player_alt_selected_area
 	local ctx = ScanContext.new {
@@ -85,50 +87,9 @@ local function handle_select_event(event)
 	}
 
 	local found_issues = false
-	local scan_missing_productivity_setting = settings["rsbs-scan-missing-productivity"].value
-	found_issues = scan_missing_productivity_setting ~= "disable" and
-		scan_missing_productivity(ctx, {
-			mode = scan_missing_productivity_setting,
-			minimal_tier = settings["rsbs-scan-missing-productivity-tier"].value,
-		}) or found_issues
-	found_issues = settings["rsbs-scan-missing-beacon-modules"].value and
-		scan_missing_beacon_modules(ctx) or found_issues
-	found_issues = settings["rsbs-scan-missing-recipes"].value and
-		scan_missing_recipes(ctx) or found_issues
-	found_issues = settings["rsbs-scan-missing-fluids"].value and
-		scan_missing_fluids(ctx) or found_issues
-	found_issues = settings["rsbs-scan-no-power"].value and
-		scan_no_power(ctx) or found_issues
-	found_issues = settings["rsbs-scan-low-power"].value and
-		scan_low_power(ctx) or found_issues
-	found_issues = settings["rsbs-scan-tick-crafting-limit"].value and
-		scan_tick_crafting_limit(ctx) or found_issues
-	found_issues = settings["rsbs-scan-backwards-belts"].value and
-		scan_backwards_belts(ctx) or found_issues
-	found_issues = settings["rsbs-scan-orphan-belts"].value and
-		scan_orphan_belts(ctx, {
-			only_possible_neighbor = settings["rsbs-scan-orphan-belts-only-possible-neighbor"].value,
-			extra_search_distance = settings["rsbs-scan-orphans-neighbor-search-distance"].value,
-		}) or found_issues
-	found_issues = settings["rsbs-scan-belt-capacity"].value and
-		scan_belt_capacity(ctx, {
-			splitters_only = settings["rsbs-belt-capacity-splitters-only"].value,
-			single_only = settings["rsbs-belt-capacity-single-only"].value,
-			strict_splitters = settings["rsbs-belt-capacity-strict-splitters"].value,
-		}) or found_issues
-	found_issues = settings["rsbs-scan-stray-loader-items"].value and
-		scan_stray_loader_items(ctx) or found_issues
-	found_issues = settings["rsbs-scan-orphan-pipes"].value and
-		scan_orphan_pipes(ctx, {
-			only_possible_neighbor = settings["rsbs-scan-orphan-pipes-only-possible-neighbor"].value,
-			extra_search_distance = settings["rsbs-scan-orphans-neighbor-search-distance"].value,
-		}) or found_issues
-	found_issues = settings["rsbs-scan-orphan-rail-signals"].value and
-		scan_orphan_rail_signals(ctx) or found_issues
-	found_issues = settings["rsbs-scan-logistic-chest-capacity"].value and
-		scan_logistic_chest_capacity(ctx, {
-			multiple_requests_only = settings["rsbs-scan-logistic-chest-capacity-multiple-requests-only"].value,
-		}) or found_issues
+	for _, scanner in ipairs(scanners) do
+		found_issues = scanner(settings, ctx) or found_issues
+	end
 
 	if found_issues then
 		if not global.explained_clear_objects[player.index] then

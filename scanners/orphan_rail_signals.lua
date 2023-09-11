@@ -19,4 +19,9 @@ local function scan_orphan_rail_signals(ctx)
 	return false
 end
 
-return scan_orphan_rail_signals
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	return settings["rsbs-scan-orphan-rail-signals"].value and scan_orphan_rail_signals(ctx)
+end

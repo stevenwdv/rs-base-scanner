@@ -27,4 +27,9 @@ local function scan_missing_fluids(ctx)
 	return false
 end
 
-return scan_missing_fluids
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	return settings["rsbs-scan-missing-fluids"].value and scan_missing_fluids(ctx)
+end

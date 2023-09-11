@@ -30,4 +30,9 @@ local function scan_low_power(ctx)
 	return false
 end
 
-return scan_low_power
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	return settings["rsbs-scan-low-power"].value and scan_low_power(ctx)
+end

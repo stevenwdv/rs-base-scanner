@@ -1,3 +1,29 @@
+---@class PlayerSettings : {[string]:nil}
+---@field rsbs-print-location-min-dimension {value:int}
+---@field rsbs-print-location-max-count {value:int}
+---@field rsbs-scan-missing-productivity {value:"disable"|"empty-slots"|"non-productivity-slots"|"not-best-available"|"not-minimal-tier"}
+---@field rsbs-scan-missing-productivity-tier {value:int}
+---@field rsbs-scan-missing-beacon-modules {value:boolean}
+---@field rsbs-scan-missing-recipes {value:boolean}
+---@field rsbs-scan-missing-fluids {value:boolean}
+---@field rsbs-scan-no-power {value:boolean}
+---@field rsbs-scan-low-power {value:boolean}
+---@field rsbs-scan-tick-crafting-limit {value:boolean}
+---@field rsbs-scan-backwards-belts {value:boolean}
+---@field rsbs-scan-orphan-belts {value:boolean}
+---@field rsbs-scan-orphan-belts-only-possible-neighbor {value:boolean}
+---@field rsbs-scan-orphans-neighbor-search-distance {value:int}
+---@field rsbs-scan-belt-capacity {value:boolean}
+---@field rsbs-belt-capacity-splitters-only {value:boolean}
+---@field rsbs-belt-capacity-single-only {value:boolean}
+---@field rsbs-belt-capacity-strict-splitters {value:boolean}
+---@field rsbs-scan-stray-loader-items {value:boolean}
+---@field rsbs-scan-orphan-pipes {value:boolean}
+---@field rsbs-scan-orphan-pipes-only-possible-neighbor {value:boolean}
+---@field rsbs-scan-orphan-rail-signals {value:boolean}
+---@field rsbs-scan-logistic-chest-capacity {value:boolean}
+---@field rsbs-scan-logistic-chest-capacity-multiple-requests-only {value:boolean}
+
 data:extend {
 	{
 		type = "int-setting",

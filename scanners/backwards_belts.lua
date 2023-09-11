@@ -46,7 +46,7 @@ local function get_adjacent_belts(belt)
 end
 
 ---@param ctx ScanContext
----@return boolean
+---@return boolean @Found issue?
 local function scan_backwards_belts(ctx)
 	local belts = ctx:find_entities {
 		type = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt" },
@@ -151,4 +151,9 @@ local function scan_backwards_belts(ctx)
 	return false
 end
 
-return scan_backwards_belts
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	return settings["rsbs-scan-backwards-belts"].value and scan_backwards_belts(ctx)
+end

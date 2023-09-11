@@ -45,4 +45,9 @@ local function scan_stray_loader_items(ctx)
 	return false
 end
 
-return scan_stray_loader_items
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	return settings["rsbs-scan-stray-loader-items"].value and scan_stray_loader_items(ctx)
+end

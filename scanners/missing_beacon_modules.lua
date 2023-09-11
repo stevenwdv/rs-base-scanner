@@ -21,4 +21,9 @@ local function scan_missing_beacon_modules(ctx)
 	return false
 end
 
-return scan_missing_beacon_modules
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	return settings["rsbs-scan-missing-beacon-modules"].value and scan_missing_beacon_modules(ctx)
+end

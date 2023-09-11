@@ -27,4 +27,9 @@ local function scan_no_power(ctx)
 	return false
 end
 
-return scan_no_power
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	return settings["rsbs-scan-no-power"].value and scan_no_power(ctx)
+end

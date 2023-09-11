@@ -34,4 +34,9 @@ local function scan_tick_crafting_limit(ctx)
 	return false
 end
 
-return scan_tick_crafting_limit
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	return settings["rsbs-scan-tick-crafting-limit"].value and scan_tick_crafting_limit(ctx)
+end

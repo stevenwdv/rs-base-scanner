@@ -12,18 +12,22 @@ local function scan_missing_productivity(ctx, options)
 	---@type LuaItemPrototype?
 	local productivity_module
 
+	---@diagnostic disable: missing-fields
 	local modules = game.get_filtered_item_prototypes { {
 		filter = "type",
 		type = "module",
 	} }
+	---@diagnostic enable: missing-fields
 	local best_enabled_tier = 0
 	-- Find best or just first productivity module, depending on mode
 	for _, module in pairs(modules) do
 		if module.category == "productivity" then
+			---@diagnostic disable: missing-fields
 			local recipes = game.get_filtered_recipe_prototypes { {
 				filter = "has-product-item",
 				elem_filters = { { filter = "name", name = module.name } }
 			} }
+			---@diagnostic enable: missing-fields
 			local available = false
 			for recipe_name in pairs(recipes) do
 				-- Note that LuaRecipePrototype.enabled means something completely different
@@ -103,9 +107,11 @@ local function scan_missing_productivity(ctx, options)
 	end
 	if assemblers_lacking > 0 then
 		if mode == "not-best-available" then
-			ctx:print_summary { "rsbs-missing-productivity.summary-specific", assemblers_lacking, productivity_module.name }
+			ctx:print_summary { "rsbs-missing-productivity.summary-specific", assemblers_lacking, productivity_module
+				.name }
 		elseif mode == "not-minimal-tier" then
-			ctx:print_summary { "rsbs-missing-productivity.summary-minimal", assemblers_lacking, productivity_module.name }
+			ctx:print_summary { "rsbs-missing-productivity.summary-minimal", assemblers_lacking, productivity_module
+				.name }
 		else
 			ctx:print_summary { "rsbs-missing-productivity.summary-any", assemblers_lacking }
 		end
@@ -114,4 +120,13 @@ local function scan_missing_productivity(ctx, options)
 	return false
 end
 
-return scan_missing_productivity
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	local mode = settings["rsbs-scan-missing-productivity"].value
+	return mode ~= "disable" and scan_missing_productivity(ctx, {
+		mode = mode,
+		minimal_tier = settings["rsbs-scan-missing-productivity-tier"].value,
+	})
+end

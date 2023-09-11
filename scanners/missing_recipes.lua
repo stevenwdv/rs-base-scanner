@@ -19,4 +19,9 @@ local function scan_missing_recipes(ctx)
 	return false
 end
 
-return scan_missing_recipes
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	return settings["rsbs-scan-missing-recipes"].value and scan_missing_recipes(ctx)
+end

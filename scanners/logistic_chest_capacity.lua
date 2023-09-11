@@ -54,4 +54,12 @@ local function scan_logistic_chest_capacity(ctx, options)
 	return false
 end
 
-return scan_logistic_chest_capacity
+---@param settings PlayerSettings
+---@param ctx ScanContext
+---@return boolean @Found issue?
+return function(settings, ctx)
+	return settings["rsbs-scan-logistic-chest-capacity"].value and scan_logistic_chest_capacity(ctx, {
+		multiple_requests_only =
+			settings["rsbs-scan-logistic-chest-capacity-multiple-requests-only"].value,
+	})
+end
