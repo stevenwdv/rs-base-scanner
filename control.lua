@@ -33,6 +33,7 @@ script.on_configuration_changed(function (change)
 						player_data.set(player_index, prop, val)
 					end
 				end
+				global[prop] = nil
 			end
 			migrate("render_objs")
 			migrate("chart_tags")
