@@ -9,6 +9,7 @@ Note that scanning large areas will lag the game for a couple of seconds.
 - Backwards transport belts / underground belts / loaders.
 - Belts that are slower than their inputs (only partially enabled by default, see settings) (may have some bugs).
 - Beacons lacking some modules.
+- Beacons affecting no machines.
 - Crafting machines lacking some productivity modules (configurable).
 - Crafting machines trying to craft more than 1 recipe per tick (>60/sec), which is impossible (this will usually only occur with mods enabling greater speeds).
 - Assembling machines that have no recipe set.
