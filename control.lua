@@ -1,3 +1,5 @@
+local futils = require "factorio_utils"
+local player_data = futils.player_data
 local ScanContext = require "scan_context"
 local scanners = {
 	require "scanners.missing_productivity",
@@ -18,47 +20,53 @@ local scanners = {
 
 local scan_base_item = "rsbs-scan-base"
 
----Initialize state variables for this player
----@param player LuaPlayer
-local function init_globals(player)
-	---@type table<uint,uint64[]>
-	global.render_objs = global.render_objs or {}
-	---@type table<uint,LuaCustomChartTag[]>
-	global.chart_tags = global.chart_tags or {}
-	---@type table<uint,boolean>
-	global.explained_clear_objects = global.explained_clear_objects or {}
-	---@type table<uint,boolean>
-	global.explained_visibility = global.explained_visibility or {}
-
-	global.render_objs[player.index] = global.render_objs[player.index] or {}
-	global.chart_tags[player.index] = global.chart_tags[player.index] or {}
-end
+script.on_configuration_changed(function (change)
+	if change.mod_changes[script.mod_name] then
+		if global.render_objs then
+			---@param prop string Property name (on `global`)
+			function migrate(prop)
+				---@type table<uint,any> Indexed by player ID
+				tbl = global[prop] or {}
+				for player_index, val in pairs(tbl) do
+					if game.players[player_index] then
+						player_data.set(player_index, prop, val)
+					end
+				end
+			end
+			migrate("render_objs")
+			migrate("chart_tags")
+			migrate("explained_clear_objects")
+			migrate("explained_visibility")
+		end
+	end
+end)
 
 ---@param player LuaPlayer
 local function clear_objects(player)
-	for _, obj in pairs(global.render_objs[player.index]) do
+	for _, obj in pairs(player_data.get(player.index, "render_objs", {})) do
 		rendering.destroy(obj)
 	end
-	for _, tag in pairs(global.chart_tags[player.index]) do
+	for _, tag in pairs(player_data.get(player.index, "chart_tags", {})) do
 		if tag.valid then
 			tag.destroy()
 		end
 	end
-	global.render_objs[player.index] = {}
-	global.chart_tags[player.index] = {}
 end
+
+script.on_event(defines.events.on_player_removed, function (event)
+	clear_objects(game.players[event.player_index])
+	player_data.purge(event.player_index)
+end)
 
 script.on_event(defines.events.on_player_cursor_stack_changed,
 	---@param event EventData.on_player_cursor_stack_changed
 	function(event)
-		local player = game.get_player(event.player_index)
-		---@cast player -nil
+		local player = game.players[event.player_index]
 		if not player.cursor_stack.valid_for_read or player.cursor_stack.name ~= scan_base_item then
 			return
 		end
 
 		-- Clear markers when player clicks selection tool
-		init_globals(player)
 		clear_objects(player)
 	end)
 
@@ -68,9 +76,7 @@ local function handle_select_event(event)
 		return
 	end
 
-	local player = game.get_player(event.player_index)
-	---@cast player -?
-	init_globals(player)
+	local player = game.players[event.player_index]
 	clear_objects(player)
 
 	local settings = player.mod_settings --[[@as PlayerSettings]]
@@ -92,13 +98,11 @@ local function handle_select_event(event)
 	end
 
 	if found_issues then
-		if not global.explained_clear_objects[player.index] then
+		if not player_data.set(player.index, "explained_clear_objects", true) then
 			player.print { "rsbs-message.clear-objects-info" }
-			global.explained_clear_objects[player.index] = true
 		end
-		if not ctx.enable_map_markers and not global.explained_visibility[player.index] then
+		if not ctx.enable_map_markers and not player_data.set(player.index, "explained_visibility", true) then
 			player.print { "rsbs-message.visibility-info" }
-			global.explained_visibility[player.index] = true
 		end
 	else
 		player.print { "rsbs-message.no-issues" }

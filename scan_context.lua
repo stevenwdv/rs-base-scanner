@@ -1,4 +1,5 @@
 local futils = require "factorio_utils"
+local player_data = futils.player_data
 
 ---@class ScanOptions
 ---@field player LuaPlayer
@@ -98,35 +99,37 @@ function ScanContext:mark_entity(entity, text, icon)
 		end
 
 		local prototype = futils.get_prototype(entity)
-		table.insert(global.render_objs[self.player.index], rendering.draw_rectangle {
+		table.insert(player_data.get(self.player.index, "render_objs", {}, true),
+			rendering.draw_rectangle {
+				surface = entity.surface,
+				left_top = entity,
+				left_top_offset = prototype.selection_box.left_top,
+				right_bottom = entity,
+				right_bottom_offset = prototype.selection_box.right_bottom,
+				players = not self.enable_force_visibility and { self.player } or nil,
+				forces = self.enable_force_visibility and { self.player.force } or nil,
+
+				color = { .90, .30, .03, .4 },
+				filled = false,
+				width = 5,
+			})
+	end
+	table.insert(player_data.get(self.player.index, "render_objs", {}, true),
+		rendering.draw_text {
 			surface = entity.surface,
-			left_top = entity,
-			left_top_offset = prototype.selection_box.left_top,
-			right_bottom = entity,
-			right_bottom_offset = prototype.selection_box.right_bottom,
+			target = entity,
+			target_offset = { 0, math.floor((times_marked + 1) / 2) * (times_marked % 2 * 2 - 1) * 1 },
+			alignment = "center",
+			vertical_alignment = "middle",
+			orientation = .1,
 			players = not self.enable_force_visibility and { self.player } or nil,
 			forces = self.enable_force_visibility and { self.player.force } or nil,
 
-			color = { .90, .30, .03, .4 },
-			filled = false,
-			width = 5,
+			text = text,
+			scale = 1.2,
+			scale_with_zoom = true,
+			color = { 0, 1, 1 },
 		})
-	end
-	table.insert(global.render_objs[self.player.index], rendering.draw_text {
-		surface = entity.surface,
-		target = entity,
-		target_offset = { 0, math.floor((times_marked + 1) / 2) * (times_marked % 2 * 2 - 1) * 1 },
-		alignment = "center",
-		vertical_alignment = "middle",
-		orientation = .1,
-		players = not self.enable_force_visibility and { self.player } or nil,
-		forces = self.enable_force_visibility and { self.player.force } or nil,
-
-		text = text,
-		scale = 1.2,
-		scale_with_zoom = true,
-		color = { 0, 1, 1 },
-	})
 	if self.enable_map_markers then
 		---@type SignalID?
 		local signal
@@ -157,12 +160,13 @@ function ScanContext:mark_entity(entity, text, icon)
 				}
 			end
 		end
-		table.insert(global.chart_tags[self.player.index], self.player.force.add_chart_tag(entity.surface, {
-			position = entity.position,
-			last_user = self.player,
-			text = ("%s[color=red]%s[/color]"):format(icon_text, text), -- Unfortunately, chart tags do not accept LocalisedStrings
-			icon = signal,
-		}))
+		table.insert(player_data.get(self.player.index, "chart_tags", {}, true),
+			self.player.force.add_chart_tag(entity.surface, {
+				position = entity.position,
+				last_user = self.player,
+				text = ("%s[color=red]%s[/color]"):format(icon_text, text), -- Unfortunately, chart tags do not accept LocalisedStrings
+				icon = signal,
+			}))
 	end
 end
 
