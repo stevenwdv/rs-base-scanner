@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.0
+Date: 2024-03-13
+  Features:
+    - Add scan for beacons affecting no machines
+  Bugfixes:
+    - Remove data for players removed from the map
+
+---------------------------------------------------------------------------------------------------
 Version: 1.7.0
 Date: 2023-09-02
   Features:
