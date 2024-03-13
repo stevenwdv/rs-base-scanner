@@ -1,7 +1,9 @@
+local scan_base_item = "rsbs-scan-base"
+
 data:extend {
 	{
 		type = "selection-tool",
-		name = "rsbs-scan-base",
+		name = scan_base_item,
 		order = "o[scan-base]",
 
 		selection_mode = "nothing",
@@ -13,6 +15,9 @@ data:extend {
 		alt_selection_color = { .8, 0, .5 },
 		always_include_tiles = true,
 
+		reverse_selection_color = { 0, 0, 0, 0 },
+		alt_reverse_selection_color = { 0, 0, 0, 0 },
+
 		subgroup = "tool",
 		flags = { "only-in-cursor", "hidden", "not-stackable", "spawnable" },
 		draw_label_for_cursor_render = true,
@@ -23,12 +28,12 @@ data:extend {
 
 	{
 		type = "shortcut",
-		name = "rsbs-scan-base",
+		name = scan_base_item,
 		order = "o[scan-base]",
 
 		action = "spawn-item",
-		item_to_spawn = "rsbs-scan-base",
-		associated_control_input = "rsbs-scan-base",
+		item_to_spawn = scan_base_item,
+		associated_control_input = scan_base_item,
 		icon = {
 			filename = "__rs-base-scanner__/graphics/scan-base-tool.png",
 			priority = "extra-high-no-scale",
@@ -39,11 +44,11 @@ data:extend {
 	},
 	{
 		type = "custom-input",
-		name = "rsbs-scan-base",
+		name = scan_base_item,
 
 		key_sequence = "CONTROL + S",
 		alternative_key_sequence = "CONTROL + SHIFT + S",
 		action = "spawn-item",
-		item_to_spawn = "rsbs-scan-base",
+		item_to_spawn = scan_base_item,
 	}
 }
