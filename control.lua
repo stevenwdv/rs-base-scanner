@@ -1,9 +1,10 @@
 local futils = require "factorio_utils"
 local player_data = futils.player_data
-local ScanContext = require "scan_context"
+local ScanContext = require "ScanContext"
 local scanners = {
 	require "scanners.missing_productivity",
 	require "scanners.missing_beacon_modules",
+	require "scanners.lone_beacons",
 	require "scanners.missing_recipes",
 	require "scanners.missing_fluids",
 	require "scanners.no_power",
