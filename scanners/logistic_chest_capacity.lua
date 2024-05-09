@@ -25,11 +25,11 @@ local function scan_logistic_chest_capacity(ctx, options)
 		end
 
 		if nr_requests == 0 then
-			return false -- Quick exit
+			goto next -- Quick exit
 		end
 
 		if options.multiple_requests_only and nr_requests == 1 then
-			return false
+			goto next
 		end
 
 		local requested_slots = 0
@@ -46,6 +46,8 @@ local function scan_logistic_chest_capacity(ctx, options)
 				name = chest.name,
 			})
 		end
+
+		::next::
 	end
 	if overfull_chests > 0 then
 		ctx:print_summary { "rsbs-logistic-chest-capacity.summary", overfull_chests }
