@@ -16,6 +16,7 @@ Note that scanning large areas will lag the game for a couple of seconds.
 - Crafting machines with missing fluid connections.
 - Crafting machines with no power (default disabled) or low power.
 - Loaders (in modded Factorio) that have some stray items on them that cannot be inserted into machine they are pointing towards.
+- Damaged items clogging up machines.
 - Orphan underground belts and pipes to ground, taking into account tileable builds.
 - Orphan rail signals.
 - Logistic chests that request too many items for their capacity.

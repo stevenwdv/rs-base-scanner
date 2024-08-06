@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
-Version: 1.8.3
+Version: 1.9.0
 Date: 2024-08-06
+  Features:
+    - Add scan to detect damaged items clogging up machines
   Changes:
     - Take into account robot carrying capacity for logistic chest capacity check
 

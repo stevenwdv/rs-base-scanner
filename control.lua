@@ -14,6 +14,7 @@ local scanners = {
 	require "scanners.orphan_belts",
 	require "scanners.belt_capacity",
 	require "scanners.stray_loader_items",
+	require "scanners.damaged_items",
 	require "scanners.orphan_pipes",
 	require "scanners.orphan_rail_signals",
 	require "scanners.logistic_chest_capacity",

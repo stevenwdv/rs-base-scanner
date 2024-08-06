@@ -19,6 +19,7 @@
 ---@field rsbs-belt-capacity-single-only {value:boolean}
 ---@field rsbs-belt-capacity-strict-splitters {value:boolean}
 ---@field rsbs-scan-stray-loader-items {value:boolean}
+---@field rsbs-scan-damaged-items {value:boolean}
 ---@field rsbs-scan-orphan-pipes {value:boolean}
 ---@field rsbs-scan-orphan-pipes-only-possible-neighbor {value:boolean}
 ---@field rsbs-scan-orphan-rail-signals {value:boolean}
@@ -31,7 +32,7 @@
 local function next_order(order)
 	last_char = order:sub(#order)
 	if last_char == "z" then
-		return order + "a"
+		return order .. "a"
 	else
 		return order:sub(1, #order - 1) .. string.char(last_char:byte() + 1)
 	end
@@ -188,6 +189,13 @@ extend_ordered {
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-stray-loader-items",
+		setting_type = "runtime-per-user",
+		default_value = true,
+	},
+
+	{
+		type = "bool-setting",
+		name = "rsbs-scan-damaged-items",
 		setting_type = "runtime-per-user",
 		default_value = true,
 	},
