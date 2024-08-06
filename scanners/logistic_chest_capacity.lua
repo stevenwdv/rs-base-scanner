@@ -5,6 +5,15 @@
 ---@param options LogisticChestCapacityOptions
 ---@return boolean
 local function scan_logistic_chest_capacity(ctx, options)
+	local max_robot_payload_size = 1
+	local robot_protos = game.get_filtered_entity_prototypes { {
+		filter = "type",
+		type = "logistic-robot",
+	} }
+	for _, robot in pairs(robot_protos) do
+		max_robot_payload_size = math.max(max_robot_payload_size, robot.max_payload_size)
+	end
+
 	local chests = ctx:find_entities { type = "logistic-container" }
 	local overfull_chests = 0
 	for _, chest in pairs(chests) do
@@ -34,7 +43,10 @@ local function scan_logistic_chest_capacity(ctx, options)
 
 		local requested_slots = 0
 		for item, count in pairs(requests) do
-			requested_slots = requested_slots + math.ceil(count / game.item_prototypes[item].stack_size)
+			local stack_size = game.item_prototypes[item].stack_size
+			-- Robots always try to take as much as they can carry, which means they may deposit too much
+			local extra_count = nr_requests == 1 and count or count + (math.min(max_robot_payload_size, stack_size) - 1)
+			requested_slots = requested_slots + math.ceil(extra_count / stack_size)
 		end
 		local total_slots = chest.prototype.get_inventory_size(defines.inventory.chest)
 		if requested_slots > total_slots then
