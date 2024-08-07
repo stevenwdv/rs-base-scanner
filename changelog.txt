@@ -3,6 +3,7 @@ Version: 1.10.0
 Date: 2024-08-07
   Features:
     - Add scan to detect accidentally unfiltered logistic storage chests
+    - Add scan to detect ghosts outside of robot construction range
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.9.0
