@@ -18,6 +18,7 @@ local scanners = {
 	require "scanners.orphan_pipes",
 	require "scanners.orphan_rail_signals",
 	require "scanners.logistic_chest_capacity",
+	require "scanners.unfiltered_chests",
 }
 
 local scan_base_item = "rsbs-scan-base"

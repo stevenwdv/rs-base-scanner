@@ -20,6 +20,7 @@ Note that scanning large areas will lag the game for a couple of seconds.
 - Orphan underground belts and pipes to ground, taking into account tileable builds.
 - Orphan rail signals.
 - Logistic chests that request too many items for their capacity.
+- Accidentally unfiltered logistic storage chests.
 
 Each can be disabled via the per player mod settings menu.
 

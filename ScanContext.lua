@@ -57,8 +57,12 @@ end
 ---@param param LuaSurface.find_entities_filtered_param
 ---@return LuaEntity[]
 function ScanContext:find_entities(param)
-	param.area = self.area
-	param.to_be_deconstructed = false
+	if param.area == nil then
+		param.area = self.area
+	end
+	if param.to_be_deconstructed == nil then
+		param.to_be_deconstructed = false
+	end
 	return self.surface.find_entities_filtered(param)
 end
 

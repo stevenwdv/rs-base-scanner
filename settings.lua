@@ -25,6 +25,7 @@
 ---@field rsbs-scan-orphan-rail-signals {value:boolean}
 ---@field rsbs-scan-logistic-chest-capacity {value:boolean}
 ---@field rsbs-scan-logistic-chest-capacity-multiple-requests-only {value:boolean}
+---@field rsbs-scan-unfiltered-chests {value:boolean}
 
 --- a, b, ... z, za, zb, ...
 ---@param order string
@@ -229,6 +230,13 @@ extend_ordered {
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-logistic-chest-capacity-multiple-requests-only",
+		setting_type = "runtime-per-user",
+		default_value = true,
+	},
+
+	{
+		type = "bool-setting",
+		name = "rsbs-scan-unfiltered-chests",
 		setting_type = "runtime-per-user",
 		default_value = true,
 	},
