@@ -54,6 +54,7 @@ local function scan_backwards_belts(ctx)
 		type = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt" },
 	}
 	local backwards_belts = 0
+	local found_unconnected_loader = false
 	for i = 1, #belts do
 		local belt = belts[i]
 		if belt.type == "transport-belt" then
@@ -136,6 +137,7 @@ local function scan_backwards_belts(ctx)
 					type = { "straight-rail", "curved-rail" },
 				}
 				if #rail == 0 then
+					found_unconnected_loader = true
 					backwards_belts = backwards_belts + 1
 					ctx:mark_entity(belt, "unconnected loader", {
 						type = "entity",
@@ -158,7 +160,12 @@ local function scan_backwards_belts(ctx)
 		--TODO splitter
 	end
 	if backwards_belts > 0 then
-		ctx:print_summary { "rsbs-backwards-belts.summary", backwards_belts }
+		---@type LocalisedString
+		local msg = { "rsbs-backwards-belts.summary", backwards_belts }
+		if found_unconnected_loader then
+			msg = { "", msg, " ", { "rsbs-backwards-belts.or-unconnected-loaders", backwards_belts } }
+		end
+		ctx:print_summary(msg)
 		return true
 	end
 	return false
