@@ -1,5 +1,6 @@
 local futils = require "factorio_utils"
 local player_data = futils.player_data
+local lualib_math2d = require "__core__.lualib.math2d"
 
 ---@class ScanOptions
 ---@field player LuaPlayer
@@ -102,14 +103,13 @@ function ScanContext:mark_entity(entity, text, icon)
 			end
 		end
 
-		local prototype = futils.get_prototype(entity)
 		table.insert(player_data.get(self.player.index, "render_objs", {}, true),
 			rendering.draw_rectangle {
 				surface = entity.surface,
 				left_top = entity,
-				left_top_offset = prototype.selection_box.left_top,
+				left_top_offset = lualib_math2d.position.subtract(entity.selection_box.left_top, entity.position),
 				right_bottom = entity,
-				right_bottom_offset = prototype.selection_box.right_bottom,
+				right_bottom_offset = lualib_math2d.position.subtract(entity.selection_box.right_bottom, entity.position),
 				players = not self.enable_force_visibility and { self.player } or nil,
 				forces = self.enable_force_visibility and { self.player.force } or nil,
 
