@@ -3,6 +3,7 @@ Version: 1.10.1
 Date: ????
   Bugfixes:
     - Fix orientation of markings for rotated entities
+    - Do not warn about unconnected loaders beside rails
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.10.0

@@ -1,3 +1,5 @@
+local futils = require "factorio_utils"
+
 ---@param orientation RealOrientation
 ---@return RealOrientation
 local function opposite_orientation(orientation)
@@ -124,11 +126,22 @@ local function scan_backwards_belts(ctx)
 			end
 		elseif belt.type == "loader-1x1" or belt.type == "loader" then
 			if not belt.loader_container then
-				backwards_belts = backwards_belts + 1
-				ctx:mark_entity(belt, "unconnected loader", {
-					type = "entity",
-					name = belt.name,
-				})
+				-- Check that there is no rail on the container side, as a loader can connect to train wagons
+				local offset_2d = belt.type == "loader" and 2 or 1
+				local container_offset =
+					futils.rotate_quarters(belt.loader_type == "input" and { 0, -offset_2d } or { 0, offset_2d }, belt.orientation)
+				local container_pos = { belt.position.x + container_offset[1], belt.position.y + container_offset[2] }
+				local rail = belt.surface.find_entities_filtered {
+					area = { left_top = container_pos, right_bottom = container_pos },
+					type = { "straight-rail", "curved-rail" },
+				}
+				if #rail == 0 then
+					backwards_belts = backwards_belts + 1
+					ctx:mark_entity(belt, "unconnected loader", {
+						type = "entity",
+						name = belt.name,
+					})
+				end
 			else
 				local belt_neighbours = belt.belt_neighbours
 				if (belt.loader_type == "input" and #belt_neighbours.inputs or #belt_neighbours.outputs) == 0 then
