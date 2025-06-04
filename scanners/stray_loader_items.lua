@@ -1,3 +1,7 @@
+local lualib_util = require "__core__.lualib.util"
+
+local machines_with_static_recipe = lualib_util.list_to_map { "assembling-machine", "rocket-silo" }
+
 ---@param ctx ScanContext
 ---@return boolean
 local function scan_stray_loader_items(ctx)
@@ -6,33 +10,31 @@ local function scan_stray_loader_items(ctx)
 	for _, loader in pairs(loaders) do
 		if loader.loader_type == "input" then
 			local container = loader.loader_container
-			if container then
-				if container.type == "assembling-machine" then
-					local recipe = container.get_recipe()
-					if recipe then
-						---@type table<string,boolean>
-						local loader_items = {}
-						for n_line = 1, 2 do
-							---@cast n_line uint
-							for name, _ in pairs(loader.get_transport_line(n_line).get_contents()) do
-								loader_items[name] = true
-							end
+			if container and machines_with_static_recipe[container.type] then
+				local recipe = container.get_recipe()
+				if recipe then
+					---@type table<string,boolean>
+					local loader_items = {}
+					for n_line = 1, 2 do
+						---@cast n_line uint
+						for _, item in pairs(loader.get_transport_line(n_line).get_contents()) do
+							loader_items[item.name] = true
 						end
+					end
 
-						for _, ingredient in pairs(recipe.ingredients) do
-							if ingredient.type == "item" and loader_items[ingredient.name] then
-								loader_items[ingredient.name] = nil
-							end
+					for _, ingredient in pairs(recipe.ingredients) do
+						if ingredient.type == "item" and loader_items[ingredient.name] then
+							loader_items[ingredient.name] = nil
 						end
+					end
 
-						local stray_item = next(loader_items)
-						if stray_item then
-							affected_loaders = affected_loaders + 1
-							ctx:mark_entity(loader, "loader with stray items", {
-								type = "item",
-								name = stray_item,
-							})
-						end
+					local stray_item = next(loader_items)
+					if stray_item then
+						affected_loaders = affected_loaders + 1
+						ctx:mark_entity(loader, "loader with stray items", {
+							type = "item",
+							name = stray_item,
+						})
 					end
 				end
 			end

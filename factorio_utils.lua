@@ -2,14 +2,14 @@
 ---@param entity LuaEntity
 ---@return string @type for this entity or the entity contained in the ghost
 local function get_type(entity)
-    return entity.type == "entity-ghost" and entity.ghost_type or entity.type
+	return entity.type == "entity-ghost" and entity.ghost_type or entity.type
 end
 
 ---Get prototype of (ghost) entity
 ---@param entity LuaEntity
 ---@return LuaEntityPrototype|LuaTilePrototype @Prototype for this entity or the entity contained in the ghost
 local function get_prototype(entity)
-    return entity.type == "entity-ghost" and entity.ghost_prototype or entity.prototype
+	return entity.type == "entity-ghost" and entity.ghost_prototype or entity.prototype
 end
 
 ---Rotate offset vector clockwise
@@ -48,11 +48,12 @@ end
 ---@param overwrite boolean? Always set value, if
 ---@return any # Value, or previous value if overwrite
 local function player_data_get_set_impl(player_index, prop, set, create, overwrite)
-	local data_players = global.player_data
+	---@type table<uint,table<string,any>>?
+	local data_players = storage.player_data
 	if not data_players then
 		if not create then return set end
 		data_players = {}
-		global.player_data = data_players
+		storage.player_data = data_players
 	end
 
 	local data_player = data_players[player_index]
@@ -104,7 +105,8 @@ local player_data = {
 
 	---@param player_index uint
 	purge = function(player_index)
-		local data_players = global.player_data
+		---@type table<uint,table<string,any>>?
+		local data_players = storage.player_data
 		if data_players then
 			data_players[player_index] = nil
 		end

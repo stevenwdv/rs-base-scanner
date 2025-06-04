@@ -1,9 +1,9 @@
 {
 	"name": "rs-base-scanner",
-	"version": "1.10.1",
+	"version": "1.11.0",
 	"title": "RS Base Scanner",
 	"author": "repne-scasb",
-	"factorio_version": "1.1",
+	"factorio_version": "2.0",
 	"description": "Scans a selected area for some issues, such as backwards belts and beacons without modules",
 	"dependencies": [
 		"base"

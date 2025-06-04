@@ -3,13 +3,13 @@
 ---@field rsbs-print-location-max-count {value:int}
 ---@field rsbs-scan-missing-productivity {value:"disable"|"empty-slots"|"non-productivity-slots"|"not-best-available"|"not-minimal-tier"}
 ---@field rsbs-scan-missing-productivity-tier {value:int}
+---@field rsbs-scan-missing-productivity-exclude-recipes {value:string}
 ---@field rsbs-scan-missing-beacon-modules {value:boolean}
 ---@field rsbs-scan-lone-beacons {value:boolean}
 ---@field rsbs-scan-missing-recipes {value:boolean}
 ---@field rsbs-scan-missing-fluids {value:boolean}
 ---@field rsbs-scan-no-power {value:boolean}
 ---@field rsbs-scan-low-power {value:boolean}
----@field rsbs-scan-tick-crafting-limit {value:boolean}
 ---@field rsbs-scan-backwards-belts {value:boolean}
 ---@field rsbs-scan-orphan-belts {value:boolean}
 ---@field rsbs-scan-orphan-belts-only-possible-neighbor {value:boolean}
@@ -40,7 +40,7 @@ local function next_order(order)
 	end
 end
 
----@param otherdata data.AnyPrototype[]
+---@param otherdata data.AnyModSettingPrototype[]
 local function extend_ordered(otherdata)
 	order = "a"
 	for _, proto in ipairs(otherdata) do
@@ -51,6 +51,7 @@ local function extend_ordered(otherdata)
 end
 
 extend_ordered {
+	-- Common
 	{
 		type = "int-setting",
 		name = "rsbs-print-location-min-dimension",
@@ -66,6 +67,8 @@ extend_ordered {
 		default_value = 4,
 	},
 
+	-- Checks
+	----
 	{
 		type = "string-setting",
 		name = "rsbs-scan-missing-productivity",
@@ -86,7 +89,15 @@ extend_ordered {
 		minimum_value = 1,
 		default_value = 1,
 	},
+	{
+		type = "string-setting",
+		name = "rsbs-scan-missing-productivity-exclude-recipes",
+		setting_type = "runtime-per-user",
+		allow_blank = true,
+		default_value = "molten-iron-from-lava, molten-copper-from-lava",
+	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-missing-beacon-modules",
@@ -94,6 +105,7 @@ extend_ordered {
 		default_value = true,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-lone-beacons",
@@ -101,6 +113,7 @@ extend_ordered {
 		default_value = true,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-missing-recipes",
@@ -108,6 +121,7 @@ extend_ordered {
 		default_value = true,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-missing-fluids",
@@ -115,6 +129,7 @@ extend_ordered {
 		default_value = true,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-no-power",
@@ -122,6 +137,7 @@ extend_ordered {
 		default_value = false,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-low-power",
@@ -129,13 +145,7 @@ extend_ordered {
 		default_value = true,
 	},
 
-	{
-		type = "bool-setting",
-		name = "rsbs-scan-tick-crafting-limit",
-		setting_type = "runtime-per-user",
-		default_value = true,
-	},
-
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-backwards-belts",
@@ -143,6 +153,7 @@ extend_ordered {
 		default_value = true,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-orphan-belts",
@@ -155,6 +166,7 @@ extend_ordered {
 		setting_type = "runtime-per-user",
 		default_value = true,
 	},
+	-- Also for scan-orphan-pipes
 	{
 		type = "int-setting",
 		name = "rsbs-scan-orphans-neighbor-search-distance",
@@ -163,6 +175,7 @@ extend_ordered {
 		default_value = 10,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-belt-capacity",
@@ -188,6 +201,7 @@ extend_ordered {
 		default_value = false,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-stray-loader-items",
@@ -195,6 +209,7 @@ extend_ordered {
 		default_value = true,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-damaged-items",
@@ -202,6 +217,7 @@ extend_ordered {
 		default_value = true,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-orphan-pipes",
@@ -215,6 +231,7 @@ extend_ordered {
 		default_value = true,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-orphan-rail-signals",
@@ -222,6 +239,7 @@ extend_ordered {
 		default_value = true,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-logistic-chest-capacity",
@@ -235,6 +253,7 @@ extend_ordered {
 		default_value = true,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-unfiltered-chests",
@@ -242,6 +261,7 @@ extend_ordered {
 		default_value = true,
 	},
 
+	----
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-outside-construction-area",

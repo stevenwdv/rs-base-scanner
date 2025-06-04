@@ -55,7 +55,7 @@ function ScanContext.new(init)
 	return obj
 end
 
----@param param LuaSurface.find_entities_filtered_param
+---@param param EntitySearchFilters
 ---@return LuaEntity[]
 function ScanContext:find_entities(param)
 	if param.area == nil then
@@ -106,10 +106,14 @@ function ScanContext:mark_entity(entity, text, icon)
 		table.insert(player_data.get(self.player.index, "render_objs", {}, true),
 			rendering.draw_rectangle {
 				surface = entity.surface,
-				left_top = entity,
-				left_top_offset = lualib_math2d.position.subtract(entity.selection_box.left_top, entity.position),
-				right_bottom = entity,
-				right_bottom_offset = lualib_math2d.position.subtract(entity.selection_box.right_bottom, entity.position),
+				left_top = {
+					entity = entity,
+					offset = lualib_math2d.position.subtract(entity.selection_box.left_top, entity.position),
+				},
+				right_bottom = {
+					entity = entity,
+					offset = lualib_math2d.position.subtract(entity.selection_box.right_bottom, entity.position),
+				},
 				players = not self.enable_force_visibility and { self.player } or nil,
 				forces = self.enable_force_visibility and { self.player.force } or nil,
 
@@ -121,8 +125,10 @@ function ScanContext:mark_entity(entity, text, icon)
 	table.insert(player_data.get(self.player.index, "render_objs", {}, true),
 		rendering.draw_text {
 			surface = entity.surface,
-			target = entity,
-			target_offset = { 0, math.floor((times_marked + 1) / 2) * (times_marked % 2 * 2 - 1) * 1 },
+			target = {
+				entity = entity,
+				offset = { 0, math.floor((times_marked + 1) / 2) * (times_marked % 2 * 2 - 1) * 1 },
+			},
 			alignment = "center",
 			vertical_alignment = "middle",
 			orientation = .1,
@@ -141,7 +147,7 @@ function ScanContext:mark_entity(entity, text, icon)
 
 		if icon then
 			if icon.type == "entity" then
-				local entity_items = game.get_filtered_item_prototypes { {
+				local entity_items = prototypes.get_item_filtered { {
 					filter = "place-result",
 					elem_filters = { { filter = "name", name = icon.name } },
 				} }

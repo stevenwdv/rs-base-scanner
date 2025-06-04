@@ -5,11 +5,14 @@ local function scan_missing_recipes(ctx)
 	local recipes_missing = 0
 	for _, assembler in pairs(assemblers) do
 		if assembler.type == "assembling-machine" and not assembler.get_recipe() then
-			recipes_missing = recipes_missing + 1
-			ctx:mark_entity(assembler, "no recipe", {
-				type = "entity",
-				name = assembler.name,
-			})
+			local control_behavior = assembler.get_control_behavior() --[[@as LuaAssemblingMachineControlBehavior?]]
+			if not (control_behavior and control_behavior.circuit_set_recipe) then
+				recipes_missing = recipes_missing + 1
+				ctx:mark_entity(assembler, "no recipe", {
+					type = "entity",
+					name = assembler.name,
+				})
+			end
 		end
 	end
 	if recipes_missing > 0 then

@@ -8,7 +8,7 @@ local function scan_unfiltered_chests(ctx)
 
 	---@type string[]
 	local storage_chest_names = {}
-	local logistic_chest_protos = game.get_filtered_entity_prototypes { {
+	local logistic_chest_protos = prototypes.get_entity_filtered { {
 		filter = "type",
 		type = "logistic-container",
 	} }

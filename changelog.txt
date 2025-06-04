@@ -1,4 +1,17 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.11.0
+Date: 2025-06-04
+  Changes:
+    - Support for Factorio 2.0
+    - Remove tick crafting limit check (FFF-402)
+    - Ignore missing recipes for machines controlled by the circuit network
+  Minor Features:
+    - Support lane splitters for belt checks
+    - Update logistic chest capacity check for Factorio 2.0 features & support cargo landing pad & space platform hub
+    - Support rocket silo for stray loader items check
+    - Various improvements to missing productivity scan, add setting to exclude recipes
+
+---------------------------------------------------------------------------------------------------
 Version: 1.10.1
 Date: 2024-08-07
   Bugfixes:

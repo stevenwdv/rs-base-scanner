@@ -1,4 +1,5 @@
 local futils = require "factorio_utils"
+local lualib_util = require "__core__.lualib.util"
 
 ---@param orientation RealOrientation
 ---@return RealOrientation
@@ -6,7 +7,9 @@ local function opposite_orientation(orientation)
 	return (orientation + .5) % 1
 end
 
-local belt_types = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt", "splitter" }
+local belt_types = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt", "splitter", "lane-splitter" }
+
+local straight_tile_belt = lualib_util.list_to_map { "transport-belt", "lane-splitter" }
 
 ---Get number of adjacent belts that were maybe meant to be connected
 ---@param belt LuaEntity
@@ -16,7 +19,7 @@ local function count_relevant_adjacent(belt, adjacent)
 	local adjacent_count = 0
 	for _, adj_belt in pairs(adjacent) do
 		-- Disregard e.g. perpendicular splitters/loaders just passing by
-		if adj_belt ~= belt and (adj_belt.type == "transport-belt" or
+		if adj_belt ~= belt and (straight_tile_belt[adj_belt.type] or
 				adj_belt.orientation == opposite_orientation(belt.orientation)) then
 			adjacent_count = adjacent_count + 1
 		end
@@ -51,13 +54,14 @@ end
 ---@return boolean @Found issue?
 local function scan_backwards_belts(ctx)
 	local belts = ctx:find_entities {
-		type = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt" },
+		--TODO splitter
+		type = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt", "lane-splitter" },
 	}
 	local backwards_belts = 0
 	local found_unconnected_loader = false
 	for i = 1, #belts do
 		local belt = belts[i]
-		if belt.type == "transport-belt" then
+		if straight_tile_belt[belt.type] then
 			local belt_neighbours = belt.belt_neighbours
 			-- If belt has no connected belts
 			if #belt_neighbours.inputs == 0 and #belt_neighbours.outputs == 0 then
@@ -74,7 +78,7 @@ local function scan_backwards_belts(ctx)
 			---@type LuaEntity?
 			local neighbor
 			if belt.type == "underground-belt" then
-				neighbor = belt.neighbours
+				neighbor = belt.neighbours --[[@as LuaEntity?]]
 			else
 				neighbor = belt.linked_belt_neighbour
 			end
@@ -157,7 +161,6 @@ local function scan_backwards_belts(ctx)
 				end
 			end
 		end
-		--TODO splitter
 	end
 	if backwards_belts > 0 then
 		---@type LocalisedString

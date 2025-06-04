@@ -1,6 +1,7 @@
 local futils = require "factorio_utils"
 
-local belt_types = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt", "splitter" }
+local belt_types = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt", "splitter",
+	"lane-splitter" }
 
 ---@class ScanBeltOptions
 ---@field splitters_only boolean
@@ -51,6 +52,7 @@ local function scan_belt_capacity(ctx, options)
 
 			if check_sum or inp_speed > speed then
 				while input.type == "underground-belt" or input.type == "linked-belt" do
+					---@type LuaEntity?
 					local neighbor = input[
 					({ ["underground-belt"] = "neighbours", ["linked-belt"] = "linked_belt_neighbour" })[input.type]]
 					if not neighbor then
@@ -62,7 +64,7 @@ local function scan_belt_capacity(ctx, options)
 						break
 					end
 					input = inputs[1]
-					inp_speed = math.min(inp_speed, input.prototype.belt_speed)
+					inp_speed = math.min(inp_speed, input.prototype.belt_speed) --[[@as double]]
 					if not check_sum and inp_speed <= speed then
 						goto next_input
 					end
@@ -72,11 +74,11 @@ local function scan_belt_capacity(ctx, options)
 					local neighbors = input.belt_neighbours
 					local split_speed = 0
 					for _, split_inp in pairs(neighbors.inputs) do
-						split_speed = split_speed + math.min(inp_speed, futils.get_prototype(split_inp).belt_speed)
+						split_speed = split_speed + math.min(inp_speed, futils.get_prototype(split_inp).belt_speed) --[[@as double]]
 					end
 					for _, split_out in pairs(neighbors.outputs) do
 						if split_out ~= belt then
-							split_speed = split_speed - math.min(inp_speed, futils.get_prototype(split_out).belt_speed)
+							split_speed = split_speed - math.min(inp_speed, futils.get_prototype(split_out).belt_speed) --[[@as double]]
 						end
 					end
 					inp_speed = math.min(inp_speed, split_speed)
