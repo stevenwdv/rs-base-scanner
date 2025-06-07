@@ -1,7 +1,14 @@
 local futils = require "factorio_utils"
 
-local belt_types = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt", "splitter",
-	"lane-splitter" }
+local belt_types = {
+	"lane-splitter",
+	"linked-belt",
+	"loader-1x1",
+	"loader",
+	"splitter",
+	"transport-belt",
+	"underground-belt",
+}
 
 ---@class ScanBeltOptions
 ---@field splitters_only boolean
@@ -15,12 +22,13 @@ local function scan_belt_capacity(ctx, options)
 	local belts = ctx:find_entities {
 		type = options.splitters_only and { "splitter" } or belt_types,
 	}
+	local single_only = options.single_only
+	local strict_splitters = options.strict_splitters
 	local slow_belts = 0
-	for n_belt = 1, #belts do
-		local belt = belts[n_belt]
+	for _, belt in ipairs(belts) do
 		local neighbors = belt.belt_neighbours
 		local speed = belt.prototype.belt_speed
-		if options.single_only then
+		if single_only then
 			local outputs = neighbors.outputs
 			if #outputs > 0 then
 				local out_speed = 0
@@ -40,17 +48,16 @@ local function scan_belt_capacity(ctx, options)
 		-- 	Or for splitters: if the sum of the splitter inputs minus the other splitter outputs (capping all at splitter speed) is faster
 		-- Unless the input is an underground/linked belt that has no slower belts as input
 
-		local check_sum = options.strict_splitters and belt.type == "splitter"
+		local check_sum = strict_splitters and belt.type == "splitter"
 		local tot_inp_speed = 0
-		for n_inp = 1, #inputs do
-			local input = inputs[n_inp]
-
+		for _, input in ipairs(inputs) do
 			local inp_speed = futils.get_prototype(input).belt_speed
 			---@cast inp_speed -nil
 
 			--FIXME sum if belt self is splitter
 
 			if check_sum or inp_speed > speed then
+				-- Get follow underground chain to first non-underground, capping inp_speed
 				while input.type == "underground-belt" or input.type == "linked-belt" do
 					---@type LuaEntity?
 					local neighbor = input[
@@ -74,11 +81,13 @@ local function scan_belt_capacity(ctx, options)
 					local neighbors = input.belt_neighbours
 					local split_speed = 0
 					for _, split_inp in pairs(neighbors.inputs) do
-						split_speed = split_speed + math.min(inp_speed, futils.get_prototype(split_inp).belt_speed) --[[@as double]]
+						split_speed = split_speed +
+							math.min(inp_speed, futils.get_prototype(split_inp).belt_speed) --[[@as double]]
 					end
 					for _, split_out in pairs(neighbors.outputs) do
 						if split_out ~= belt then
-							split_speed = split_speed - math.min(inp_speed, futils.get_prototype(split_out).belt_speed) --[[@as double]]
+							split_speed = split_speed -
+								math.min(inp_speed, futils.get_prototype(split_out).belt_speed) --[[@as double]]
 						end
 					end
 					inp_speed = math.min(inp_speed, split_speed)

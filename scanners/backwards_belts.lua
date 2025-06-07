@@ -7,7 +7,15 @@ local function opposite_orientation(orientation)
 	return (orientation + .5) % 1
 end
 
-local belt_types = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt", "splitter", "lane-splitter" }
+local belt_types = {
+	"lane-splitter",
+	"linked-belt",
+	"loader-1x1",
+	"loader",
+	"splitter",
+	"transport-belt",
+	"underground-belt",
+}
 
 local straight_tile_belt = lualib_util.list_to_map { "transport-belt", "lane-splitter" }
 
@@ -55,16 +63,23 @@ end
 local function scan_backwards_belts(ctx)
 	local belts = ctx:find_entities {
 		--TODO splitter
-		type = { "linked-belt", "loader-1x1", "loader", "transport-belt", "underground-belt", "lane-splitter" },
+		type = {
+			"lane-splitter",
+			"linked-belt",
+			"loader-1x1",
+			"loader",
+			"splitter",
+			"transport-belt",
+			"underground-belt",
+		},
 	}
 	local backwards_belts = 0
 	local found_unconnected_loader = false
-	for i = 1, #belts do
-		local belt = belts[i]
+	for _, belt in ipairs(belts) do
 		if straight_tile_belt[belt.type] then
-			local belt_neighbours = belt.belt_neighbours
+			local belt_neighbors = belt.belt_neighbours
 			-- If belt has no connected belts
-			if #belt_neighbours.inputs == 0 and #belt_neighbours.outputs == 0 then
+			if #belt_neighbors.inputs == 0 and #belt_neighbors.outputs == 0 then
 				-- But it should probably have been connected to belts on both sides
 				if get_adjacent_belts(belt) >= 2 then
 					backwards_belts = backwards_belts + 1
@@ -134,7 +149,8 @@ local function scan_backwards_belts(ctx)
 				-- Check that there is no rail on the container side, as a loader can connect to train wagons
 				local offset_2d = belt.type == "loader" and 2 or 1
 				local container_offset =
-					futils.rotate_quarters(belt.loader_type == "input" and { 0, -offset_2d } or { 0, offset_2d }, belt.orientation)
+					futils.rotate_quarters(belt.loader_type == "input" and { 0, -offset_2d } or { 0, offset_2d },
+						belt.orientation)
 				local container_pos = { belt.position.x + container_offset[1], belt.position.y + container_offset[2] }
 				local rail = belt.surface.find_entities_filtered {
 					area = { left_top = container_pos, right_bottom = container_pos },
