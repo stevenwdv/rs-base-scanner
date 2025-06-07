@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.12.0
+Date: ????
+  Features:
+    - Add check for unfiltered output inserter for recipe with multiple outputs, when a filtered inserter exists
+
+---------------------------------------------------------------------------------------------------
 Version: 1.11.0
 Date: 2025-06-04
   Changes:

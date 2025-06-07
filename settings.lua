@@ -26,6 +26,7 @@
 ---@field rsbs-scan-logistic-chest-capacity {value:boolean}
 ---@field rsbs-scan-logistic-chest-capacity-multiple-requests-only {value:boolean}
 ---@field rsbs-scan-unfiltered-chests {value:boolean}
+---@field rsbs-scan-unfiltered-inserters {value:boolean}
 ---@field rsbs-scan-outside-construction-area {value:boolean}
 
 --- a, b, ... z, za, zb, ...
@@ -257,6 +258,14 @@ extend_ordered {
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-unfiltered-chests",
+		setting_type = "runtime-per-user",
+		default_value = true,
+	},
+
+	----
+	{
+		type = "bool-setting",
+		name = "rsbs-scan-unfiltered-inserters",
 		setting_type = "runtime-per-user",
 		default_value = true,
 	},

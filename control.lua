@@ -18,6 +18,7 @@ local scanners = {
 	require "scanners.orphan_rail_signals",
 	require "scanners.logistic_chest_capacity",
 	require "scanners.unfiltered_chests",
+	require "scanners.unfiltered_inserters",
 	require "scanners.outside_construction_area",
 }
 
