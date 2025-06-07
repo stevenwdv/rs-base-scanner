@@ -20,7 +20,9 @@ Note that scanning large areas will lag the game for a couple of seconds.
 - Orphan rail signals.
 - Logistic chests that request too many items for their capacity.
 - Accidentally unfiltered logistic storage chests.
+- Accidentally unfiltered output inserters.
 - Ghosts outside of robot construction range.
+- Buildings with logistic network conditions outside the logistic network.
 
 Each can be disabled via the per player mod settings menu.
 
