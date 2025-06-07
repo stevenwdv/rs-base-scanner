@@ -20,6 +20,7 @@ local scanners = {
 	require "scanners.unfiltered_chests",
 	require "scanners.unfiltered_inserters",
 	require "scanners.outside_construction_area",
+	require "scanners.logistic_conditions_outside_network",
 }
 
 local scan_base_item = "rsbs-scan-base"

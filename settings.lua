@@ -28,6 +28,7 @@
 ---@field rsbs-scan-unfiltered-chests {value:boolean}
 ---@field rsbs-scan-unfiltered-inserters {value:boolean}
 ---@field rsbs-scan-outside-construction-area {value:boolean}
+---@field rsbs-scan-logistic-conditions-outside-network {value:boolean}
 
 --- a, b, ... z, za, zb, ...
 ---@param order string
@@ -274,6 +275,14 @@ extend_ordered {
 	{
 		type = "bool-setting",
 		name = "rsbs-scan-outside-construction-area",
+		setting_type = "runtime-per-user",
+		default_value = true,
+	},
+
+	----
+	{
+		type = "bool-setting",
+		name = "rsbs-scan-logistic-conditions-outside-network",
 		setting_type = "runtime-per-user",
 		default_value = true,
 	},

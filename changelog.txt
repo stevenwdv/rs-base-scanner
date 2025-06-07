@@ -1,8 +1,9 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.12.0
-Date: ????
+Date: 2025-06-07
   Features:
     - Add check for unfiltered output inserter for recipe with multiple outputs, when a filtered inserter exists
+    - Add check for logistic conditions outside logistic network
   Bugfixes:
     - Fix logistic chest icons in messages
 
