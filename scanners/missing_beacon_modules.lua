@@ -3,7 +3,7 @@
 local function scan_missing_beacon_modules(ctx)
 	local beacons = ctx:find_entities { type = "beacon" }
 	local beacons_missing = 0
-	for _, beacon in pairs(beacons) do
+	for _, beacon in ipairs(beacons) do
 		local module_inv = beacon.get_module_inventory()
 		---@cast module_inv -nil
 		if module_inv.find_empty_stack() then

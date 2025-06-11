@@ -3,7 +3,7 @@
 local function scan_missing_recipes(ctx)
 	local assemblers = ctx:get_crafting_machines()
 	local recipes_missing = 0
-	for _, assembler in pairs(assemblers) do
+	for _, assembler in ipairs(assemblers) do
 		if assembler.type == "assembling-machine" and not assembler.get_recipe() then
 			local control_behavior = assembler.get_control_behavior() --[[@as LuaAssemblingMachineControlBehavior?]]
 			if not (control_behavior and control_behavior.circuit_set_recipe) then

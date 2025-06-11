@@ -51,10 +51,10 @@ end)
 
 ---@param player LuaPlayer
 local function clear_objects(player)
-	for _, obj in pairs(player_data.get(player.index, "render_objs", {}) --[[@as LuaRenderObject[] ]]) do
-		obj.destroy()
+	for _, obj in ipairs(player_data.get(player.index, "render_objs", {}) --[[@as (uint64|LuaRenderObject)[] ]]) do
+		futils.destroy_render_obj(obj)
 	end
-	for _, tag in pairs(player_data.get(player.index, "chart_tags", {}) --[[@as LuaCustomChartTag[] ]]) do
+	for _, tag in ipairs(player_data.get(player.index, "chart_tags", {}) --[[@as LuaCustomChartTag[] ]]) do
 		if tag.valid then
 			tag.destroy()
 		end

@@ -32,7 +32,7 @@ local function scan_belt_capacity(ctx, options)
 			local outputs = neighbors.outputs
 			if #outputs > 0 then
 				local out_speed = 0
-				for _, output in pairs(outputs) do
+				for _, output in ipairs(outputs) do
 					out_speed = out_speed + futils.get_prototype(output).belt_speed
 				end
 				if out_speed <= speed then
@@ -80,11 +80,11 @@ local function scan_belt_capacity(ctx, options)
 				if input.type == "splitter" then
 					local neighbors = input.belt_neighbours
 					local split_speed = 0
-					for _, split_inp in pairs(neighbors.inputs) do
+					for _, split_inp in ipairs(neighbors.inputs) do
 						split_speed = split_speed +
 							math.min(inp_speed, futils.get_prototype(split_inp).belt_speed) --[[@as double]]
 					end
-					for _, split_out in pairs(neighbors.outputs) do
+					for _, split_out in ipairs(neighbors.outputs) do
 						if split_out ~= belt then
 							split_speed = split_speed -
 								math.min(inp_speed, futils.get_prototype(split_out).belt_speed) --[[@as double]]

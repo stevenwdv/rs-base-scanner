@@ -7,7 +7,7 @@ local machines_with_static_recipe = lualib_util.list_to_map { "assembling-machin
 local function scan_stray_loader_items(ctx)
 	local loaders = ctx:find_entities { type = { "loader", "loader-1x1" } }
 	local affected_loaders = 0
-	for _, loader in pairs(loaders) do
+	for _, loader in ipairs(loaders) do
 		if loader.loader_type == "input" then
 			local container = loader.loader_container
 			if container and machines_with_static_recipe[container.type] then
@@ -17,12 +17,12 @@ local function scan_stray_loader_items(ctx)
 					local loader_items = {}
 					for n_line = 1, 2 do
 						---@cast n_line uint
-						for _, item in pairs(loader.get_transport_line(n_line).get_contents()) do
+						for _, item in ipairs(loader.get_transport_line(n_line).get_contents()) do
 							loader_items[item.name] = true
 						end
 					end
 
-					for _, ingredient in pairs(recipe.ingredients) do
+					for _, ingredient in ipairs(recipe.ingredients) do
 						if ingredient.type == "item" and loader_items[ingredient.name] then
 							loader_items[ingredient.name] = nil
 						end

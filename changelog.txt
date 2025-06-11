@@ -1,6 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.0
+Date: 2025-06-11
+  Bugfixes:
+    - Fix crash when migrating to Factorio 2.0 with issue markers present
+  Info:
+    - Bumped major version to 2 to align with Factorio version
+
+---------------------------------------------------------------------------------------------------
 Version: 1.12.1
-Date: ????
+Date: 2025-06-08
   Bugfixes:
     - Allow direct insertion for unfiltered inserter check
 

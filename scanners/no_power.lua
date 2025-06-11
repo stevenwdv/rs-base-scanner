@@ -6,7 +6,7 @@ local function scan_no_power(ctx)
 	---@type table<uint,true>
 	local networks_scanned = {}
 	local no_power_assemblers = 0
-	for _, assembler in pairs(assemblers) do
+	for _, assembler in ipairs(assemblers) do
 		local network = assembler.electric_network_id
 		if not network or not networks_scanned[network] then
 			if network then networks_scanned[network] = true end

@@ -12,10 +12,31 @@ local function get_prototype(entity)
 	return entity.type == "entity-ghost" and entity.ghost_prototype or entity.prototype
 end
 
+---Factorio 1 compatibility function
+---@param obj_or_id LuaRenderObject|uint64
+---@return LuaRenderObject?
+local function get_render_obj(obj_or_id)
+	if type(obj_or_id) == "number" then
+		return rendering.get_object_by_id(obj_or_id)
+	else
+		---@cast obj_or_id -uint64
+		return obj_or_id
+	end
+end
+
+---Factorio 1 compatibility function
+---@param obj_or_id LuaRenderObject|uint64
+local function destroy_render_obj(obj_or_id)
+	local obj = get_render_obj(obj_or_id)
+	if obj then
+		obj.destroy()
+	end
+end
+
 ---Rotate offset vector clockwise
----@param offset Vector
+---@param offset {[1]:float,[2]:float}
 ---@param orientation RealOrientation Only quarters
----@return Vector
+---@return {[1]:float,[2]:float}
 ---@nodiscard
 local function rotate_quarters(offset, orientation)
 	local x, y = offset[1], offset[2]
@@ -116,6 +137,8 @@ local player_data = {
 return {
 	get_type = get_type,
 	get_prototype = get_prototype,
+	get_render_obj = get_render_obj,
+	destroy_render_obj = destroy_render_obj,
 	rotate_quarters = rotate_quarters,
 	get_chunk = get_chunk,
 	get_chunk_id = get_chunk_id,

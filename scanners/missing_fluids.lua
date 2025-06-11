@@ -3,7 +3,7 @@
 local function scan_missing_fluids(ctx)
 	local assemblers = ctx:get_crafting_machines()
 	local missing_fluids = 0
-	for _, assembler in pairs(assemblers) do
+	for _, assembler in ipairs(assemblers) do
 		local fluidboxes = assembler.fluidbox
 		for n_box = 1, #fluidboxes do
 			---@cast n_box uint

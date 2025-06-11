@@ -25,7 +25,7 @@ local straight_tile_belt = lualib_util.list_to_map { "transport-belt", "lane-spl
 ---@return integer
 local function count_relevant_adjacent(belt, adjacent)
 	local adjacent_count = 0
-	for _, adj_belt in pairs(adjacent) do
+	for _, adj_belt in ipairs(adjacent) do
 		-- Disregard e.g. perpendicular splitters/loaders just passing by
 		if adj_belt ~= belt and (straight_tile_belt[adj_belt.type] or
 				adj_belt.orientation == opposite_orientation(belt.orientation)) then
@@ -101,7 +101,7 @@ local function scan_backwards_belts(ctx)
 			if neighbor then
 				---Number of backwards belts in this underground pair
 				local backwards = 0
-				for _, belt in pairs { belt, neighbor } do
+				for _, belt in ipairs { belt, neighbor } do
 					local belt_neighbours = belt.belt_neighbours
 					local type = belt.type == "underground-belt" and belt.belt_to_ground_type or belt.linked_belt_type
 					-- If underground belt has no connected regular belts

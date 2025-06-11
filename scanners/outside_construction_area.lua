@@ -11,7 +11,7 @@ local function scan_outside_construction_area(ctx)
 	local omitted_markings = false
 	---@type table<ChunkID,integer>
 	local entities_per_chunk = {}
-	for _, entity in pairs(entities) do
+	for _, entity in ipairs(entities) do
 		-- Note that indeed only the center of the entity is important
 		if #ctx.surface.find_logistic_networks_by_construction_area(entity.position, entity.force) == 0 then
 			outside_construction_area = outside_construction_area + 1

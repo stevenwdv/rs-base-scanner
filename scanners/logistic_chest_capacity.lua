@@ -44,7 +44,7 @@ local function scan_logistic_chest_capacity(ctx, options)
 
 	local chests = ctx:find_entities { type = { "logistic-container", "cargo-landing-pad", "space-platform-hub" } }
 	local overfull_chests = 0
-	for _, chest in pairs(chests) do
+	for _, chest in ipairs(chests) do
 		local type = chest.type
 		local logistic_point = chest.get_requester_point()
 		if logistic_point then

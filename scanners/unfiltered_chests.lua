@@ -19,7 +19,7 @@ local function scan_unfiltered_chests(ctx)
 	end
 	local storage_chests = ctx:find_entities { name = storage_chest_names }
 	local unfiltered_chests = 0
-	for _, storage_chest in pairs(storage_chests) do
+	for _, storage_chest in ipairs(storage_chests) do
 		if not storage_chest.storage_filter then
 			-- Inserters and loaders that may be pointing into this chest
 			local inserters = ctx:find_entities {
@@ -35,7 +35,7 @@ local function scan_unfiltered_chests(ctx)
 				},
 				type = {"inserter", "loader", "loader-1x1"},
 			}
-			for _, inserter in pairs(inserters) do
+			for _, inserter in ipairs(inserters) do
 				if (inserter.type == "inserter" and inserter.drop_target == storage_chest
 					and inserter.pickup_target and not allowed_input_types[inserter.pickup_target.type])
 					or (inserter.type ~= "inserter" and inserter.loader_type == "input" and inserter.loader_container == storage_chest) then

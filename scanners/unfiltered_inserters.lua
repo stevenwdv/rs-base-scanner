@@ -14,7 +14,7 @@ local function scan_unfiltered_inserters(ctx)
 
 	local assemblers = ctx:get_crafting_machines()
 	local unfiltered_inserters = 0
-	for _, assembler in pairs(assemblers) do
+	for _, assembler in ipairs(assemblers) do
 		local recipe = assembler.get_recipe()
 		-- Filtering only makes sense if we have multiple products
 		if recipe and #recipe.products > 1 then
@@ -35,7 +35,7 @@ local function scan_unfiltered_inserters(ctx)
 			if #inserters > 1 then -- Quick exit
 				local has_filtered = false
 				-- Is one of the inserters filtered?
-				for _, inserter in pairs(inserters) do
+				for _, inserter in ipairs(inserters) do
 					if inserter.pickup_target == assembler then
 						if inserter.use_filters then
 							has_filtered = true
@@ -45,7 +45,7 @@ local function scan_unfiltered_inserters(ctx)
 				end
 				if has_filtered then
 					-- Then mark the unfiltered ones
-					for _, inserter in pairs(inserters) do
+					for _, inserter in ipairs(inserters) do
 						if inserter.pickup_target == assembler then
 							if not inserter.use_filters then
 								local dropoff_target = inserter.drop_target

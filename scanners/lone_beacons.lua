@@ -3,7 +3,7 @@
 local function scan_lone_beacons(ctx)
 	local beacons = ctx:find_entities { type = "beacon" }
 	local lone_beacons = 0
-	for _, beacon in pairs(beacons) do
+	for _, beacon in ipairs(beacons) do
 		if #beacon.get_beacon_effect_receivers() == 0 then
 			lone_beacons = lone_beacons + 1
 			ctx:mark_entity(beacon, "lone beacon", {

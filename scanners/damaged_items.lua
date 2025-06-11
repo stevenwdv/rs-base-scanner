@@ -6,7 +6,7 @@ local function scan_damaged_items(ctx)
 	local damaged_items = 0
 
 	local assemblers = ctx:get_crafting_machines()
-	for _, assembler in pairs(assemblers) do
+	for _, assembler in ipairs(assemblers) do
 		local input_inventory = assembler.get_inventory(defines.inventory.assembling_machine_input)
 		if input_inventory then
 			for i = 1, #input_inventory do
@@ -23,7 +23,7 @@ local function scan_damaged_items(ctx)
 	end
 
 	local inserters = ctx:find_entities { type = "inserter" }
-	for _, inserter in pairs(inserters) do
+	for _, inserter in ipairs(inserters) do
 		local stack = inserter.held_stack
 		if stack.valid_for_read and stack.health < 1 then
 			damaged_items = damaged_items + 1
@@ -35,7 +35,7 @@ local function scan_damaged_items(ctx)
 	end
 
 	local loaders = ctx:find_entities { type = { "loader", "loader-1x1" } }
-	for _, loader in pairs(loaders) do
+	for _, loader in ipairs(loaders) do
 		if loader.loader_type == "input" then
 			for n_line = 1, 2 do
 				local transport_line = loader.get_transport_line(n_line)

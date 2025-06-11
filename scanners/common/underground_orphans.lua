@@ -62,7 +62,7 @@ local function scan_underground_orphans(ctx, type, options)
 
 	---@type table<ChunkID,LuaEntity[]>
 	local maybe_orphan = {}
-	for _, underground in pairs(undergrounds) do
+	for _, underground in ipairs(undergrounds) do
 		if not has_neighbor(underground) then
 			local belt_neighbours = scan_belts and underground.belt_neighbours
 			if not belt_neighbours or #belt_neighbours.inputs == 0 or #belt_neighbours.outputs == 0 then
@@ -85,7 +85,7 @@ local function scan_underground_orphans(ctx, type, options)
 	end
 
 	for _, chunk_orphans in pairs(maybe_orphan) do
-		for _, underground in pairs(chunk_orphans) do
+		for _, underground in ipairs(chunk_orphans) do
 			local chunk_x, chunk_y = futils.get_chunk(underground.position)
 
 			local underground_distance = underground.prototype.max_underground_distance + options.extra_search_distance
@@ -99,7 +99,7 @@ local function scan_underground_orphans(ctx, type, options)
 			for _chunk_offset = 0, underground_chunks do
 				local neighbor_orphans = maybe_orphan[futils.get_chunk_id(chunk_x, chunk_y)]
 				if neighbor_orphans then
-					for _, neighbor in pairs(neighbor_orphans) do
+					for _, neighbor in ipairs(neighbor_orphans) do
 						if scan_belts and neighbor.name == underground.name and neighbor.direction == underground.direction and
 							(neighbor.belt_to_ground_type == "input") ~= is_belt_input
 							or not scan_belts and neighbor.direction == opposite_dir

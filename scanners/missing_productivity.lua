@@ -74,7 +74,7 @@ local function scan_missing_productivity(ctx, options)
 
 	local assemblers = ctx:get_crafting_machines()
 	local assemblers_lacking = 0
-	for _, assembler in pairs(assemblers) do
+	for _, assembler in ipairs(assemblers) do
 		local assembler_allowed_effects = assembler.prototype.allowed_effects
 		if assembler_allowed_effects and assembler_allowed_effects["productivity"] then
 			local recipe = assembler.get_recipe()
